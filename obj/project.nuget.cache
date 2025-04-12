@@ -1,0 +1,23 @@
+{
+  "version": 2,
+  "dgSpecHash": "bgHf40i5b2U=",
+  "success": true,
+  "projectFilePath": "C:\\Users\\nssim\\source\\repos\\Terminal_App\\Terminal_App.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\nssim\\.nuget\\packages\\microsoft.web.webview2\\1.0.2903.40\\microsoft.web.webview2.1.0.2903.40.nupkg.sha512",
+    "C:\\Users\\nssim\\.nuget\\packages\\microsoft.windows.sdk.buildtools\\10.0.26100.1742\\microsoft.windows.sdk.buildtools.10.0.26100.1742.nupkg.sha512",
+    "C:\\Users\\nssim\\.nuget\\packages\\microsoft.windowsappsdk\\1.7.250401001\\microsoft.windowsappsdk.1.7.250401001.nupkg.sha512",
+    "C:\\Users\\nssim\\.nuget\\packages\\octokit\\14.0.0\\octokit.14.0.0.nupkg.sha512",
+    "C:\\Users\\nssim\\.nuget\\packages\\microsoft.netcore.app.runtime.win-x64\\8.0.11\\microsoft.netcore.app.runtime.win-x64.8.0.11.nupkg.sha512",
+    "C:\\Users\\nssim\\.nuget\\packages\\microsoft.netcore.app.runtime.win-x86\\8.0.11\\microsoft.netcore.app.runtime.win-x86.8.0.11.nupkg.sha512",
+    "C:\\Users\\nssim\\.nuget\\packages\\microsoft.netcore.app.runtime.win-arm64\\8.0.11\\microsoft.netcore.app.runtime.win-arm64.8.0.11.nupkg.sha512",
+    "C:\\Users\\nssim\\.nuget\\packages\\microsoft.windowsdesktop.app.runtime.win-x64\\8.0.11\\microsoft.windowsdesktop.app.runtime.win-x64.8.0.11.nupkg.sha512",
+    "C:\\Users\\nssim\\.nuget\\packages\\microsoft.windowsdesktop.app.runtime.win-x86\\8.0.11\\microsoft.windowsdesktop.app.runtime.win-x86.8.0.11.nupkg.sha512",
+    "C:\\Users\\nssim\\.nuget\\packages\\microsoft.windowsdesktop.app.runtime.win-arm64\\8.0.11\\microsoft.windowsdesktop.app.runtime.win-arm64.8.0.11.nupkg.sha512",
+    "C:\\Users\\nssim\\.nuget\\packages\\microsoft.aspnetcore.app.runtime.win-x64\\8.0.11\\microsoft.aspnetcore.app.runtime.win-x64.8.0.11.nupkg.sha512",
+    "C:\\Users\\nssim\\.nuget\\packages\\microsoft.aspnetcore.app.runtime.win-x86\\8.0.11\\microsoft.aspnetcore.app.runtime.win-x86.8.0.11.nupkg.sha512",
+    "C:\\Users\\nssim\\.nuget\\packages\\microsoft.aspnetcore.app.runtime.win-arm64\\8.0.11\\microsoft.aspnetcore.app.runtime.win-arm64.8.0.11.nupkg.sha512",
+    "C:\\Users\\nssim\\.nuget\\packages\\microsoft.windows.sdk.net.ref\\10.0.19041.54\\microsoft.windows.sdk.net.ref.10.0.19041.54.nupkg.sha512"
+  ],
+  "logs": []
+}

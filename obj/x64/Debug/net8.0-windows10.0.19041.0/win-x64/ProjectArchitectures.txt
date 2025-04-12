@@ -1,0 +1,1 @@
+C:\Users\nssim\source\repos\Terminal_App\Terminal_App.csproj;x64

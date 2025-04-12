@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "Terminal_App (Package)": {
+      "commandName": "MsixPackage"
+    },
+    "Terminal_App (Unpackaged)": {
+      "commandName": "Project"
+    }
+  }
+}
