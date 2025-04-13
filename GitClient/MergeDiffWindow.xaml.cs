@@ -67,64 +67,58 @@ public partial class MergeDiffWindow : Window
         {
             for (int i = 0; i < lines; i++)
             {
-                bool shouldContinue = false;
+                string? yt = null;
+                string? tt = null;
+                string? bt = null;
+                
                 if (yourAdditionLineNumbers.Contains(yourCurrentLine) &&
                     yourRemovalLineNumbers.Contains(yourCurrentLine))
                 {
-                    AddText(YourGrid, yourLines[yourCurrentLine++], i);
-                    AddText(BaseGrid, baseLines[baseCurrentLine++], i);
-                    shouldContinue = true;
+                    yt = yourLines[yourCurrentLine++];
+                    bt = baseLines[baseCurrentLine++];
+                }
+                else if (yourAdditionLineNumbers.Contains(yourCurrentLine))
+                {
+                    yt = yourLines[yourCurrentLine++];
+                    bt = " added line goes here vs yours";
+                }
+                else if (yourRemovalLineNumbers.Contains(baseCurrentLine))
+                {
+                    yt = " removed lin yorese";
+                    bt = baseLines[baseCurrentLine++];
                 }
 
                 if (theirAdditionLineNumbers.Contains(theirCurrentLine) &&
                     theirRemovalLineNumbers.Contains(theirCurrentLine))
+                { 
+                    tt = theirLines[theirCurrentLine++];
+                    if (bt == null)
+                        bt = baseLines[baseCurrentLine++];
+                }
+                else if (theirAdditionLineNumbers.Contains(theirCurrentLine))
                 {
-                    AddText(TheirGrid, theirLines[theirCurrentLine++], i);
-                    if (!shouldContinue)
-                        AddText(BaseGrid, baseLines[baseCurrentLine++], i);
-                    shouldContinue = true;
+                    tt = theirLines[theirCurrentLine++];
+                    if (bt == null)
+                        bt = " added line goes here vs theirs";
+                }
+                else if (theirAdditionLineNumbers.Contains(baseCurrentLine))
+                {
+                    tt = " removed line thrits";
+                    if (bt == null)
+                        bt = baseLines[baseCurrentLine++];
                 }
 
-                if (shouldContinue) continue;
-
-                if (yourAdditionLineNumbers.Contains(yourCurrentLine))
-                {
-                    AddText(YourGrid, yourLines[yourCurrentLine++], i);
-                    AddText(BaseGrid, " added line goes here vs yours", i);
-                    shouldContinue = true;
-                }
-
-                if (theirAdditionLineNumbers.Contains(theirCurrentLine))
-                {
-                    AddText(TheirGrid, theirLines[theirCurrentLine++], i);
-                    if (!shouldContinue)
-                        AddText(BaseGrid, " added line goes here vs theirs", i);
-                    shouldContinue = true;
-                }
-
-                if (shouldContinue) continue;
-
-                if (yourRemovalLineNumbers.Contains(baseCurrentLine))
-                {
-                    AddText(YourGrid, " removed lin yorese", i);
-                    AddText(BaseGrid, baseLines[baseCurrentLine++], i);
-                    shouldContinue = true;
-                }
-
-                if (theirAdditionLineNumbers.Contains(baseCurrentLine))
-                {
-                    AddText(TheirGrid, " removed line thrits", i);
-                    if (!shouldContinue)
-                        AddText(BaseGrid, baseLines[baseCurrentLine++], i);
-                    shouldContinue = true;
-                }
-
-                if (shouldContinue) continue;
-
+                if (bt == null)
+                    bt = "bt this guy was null as hell";
+                if (tt == null)
+                    tt = "tt this guy was null as hell";
+                if (yt == null)
+                    yt = "yt this guy was null as hell";
+                
                 // at this point the line must be empty (no additions)
-                AddText(BaseGrid, baseLines[baseCurrentLine++], i);
-                AddText(YourGrid, yourLines[yourCurrentLine++], i);
-                AddText(TheirGrid, theirLines[theirCurrentLine++], i);
+                AddText(BaseGrid, bt, i);
+                AddText(YourGrid, yt, i);
+                AddText(TheirGrid, tt, i);
 
             }
         }
