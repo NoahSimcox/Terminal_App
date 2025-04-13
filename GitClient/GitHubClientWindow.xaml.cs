@@ -20,6 +20,11 @@ public partial class GitHubClientWindow : Window
         InitializeComponent();
         LoadSettings();
         RefreshChangedFilesText();
+
+
+        RepoDirectory = "C:\\Users\\finne\\RiderProjects\\Terminal_App";
+        User = "Finnerex";
+        Email = "finnerex@gmail.com";
     }
 
     public string RepoDirectory
@@ -43,7 +48,7 @@ public partial class GitHubClientWindow : Window
 
     public string CommitMessage;
 
-    public void RefreshChangedFilesText()
+    public void RefreshChangedFilesText() // erm what 
     {
         try { ChangedFilesText.Text = string.Join('\n', _client.GetChangedFiles()); }
         catch (Exception e) { ChangedFilesText.Text = e.Message; }
