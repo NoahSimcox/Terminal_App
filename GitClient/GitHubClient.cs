@@ -33,7 +33,11 @@ public class GitHubClient
         set
         {
             _localRepoDirectory = value;
-            repo = new Repository(value);
+            try
+            {
+                repo = new Repository(value);
+            } catch (Exception e) {}
+            
         }
     }
 
