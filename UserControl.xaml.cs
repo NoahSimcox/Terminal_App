@@ -37,11 +37,15 @@ namespace Terminal_App
         private CancellationTokenSource _cts = new();
         private SemaphoreSlim _autoResetEvent = new(0,1);
         private ConcurrentQueue<byte[]> _command =new();
+        public int Id;
+        public MainWindow MainWindow;
 
         private Microsoft.UI.Dispatching.DispatcherQueue _dispatcherQueue;
 
-        public UserControl()
+        public UserControl(int id, MainWindow mainWindow)
         {
+            Id = id;
+            MainWindow = mainWindow;
             InitializeComponent();
             _dispatcherQueue = Microsoft.UI.Dispatching.DispatcherQueue.GetForCurrentThread();
             string contents = _streamReader.ReadToEnd();
@@ -73,10 +77,10 @@ namespace Terminal_App
                 while(!_cts.IsCancellationRequested)
                 {
                     await Task.Delay(1000);
-                    // if(!_pseudoConsole.Buffer.Dirty)
-                    // {
-                    //     continue;
-                    // }
+                    if(MainWindow.ActiveTab != Id)
+                    {
+                        continue;
+                    }
                     _dispatcherQueue.TryEnqueue(() =>
                     {
                         double vertiOffset = ScrollViewer.VerticalOffset;
