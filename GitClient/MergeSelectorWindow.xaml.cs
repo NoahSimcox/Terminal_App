@@ -82,9 +82,22 @@ public partial class MergeSelectorWindow : Window
         mergeWindow.Activate();
     }
 
-    private void OnClosed(object sender, WindowEventArgs args)
+    public void Abort()
     {
+        _repo.Reset(ResetMode.Hard, _repo.Head.Tip);
+        _repo.Index.Write();
+    }
+    
+    public void ConfirmMerge()
+    {
+        // TODO: add check if resolved
         _repo.Commit("merge", _signature, _signature);
     }
+
+    private void OnClosed(object sender, WindowEventArgs args)
+    {
+        Abort();
+    }
+    
 }
 

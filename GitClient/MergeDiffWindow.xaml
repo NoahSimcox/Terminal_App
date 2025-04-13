@@ -9,49 +9,46 @@
     mc:Ignorable="d"
     Title="Manage Merge">
     
-    <Grid Background="Black">
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="*"/>
-        </Grid.ColumnDefinitions>
-        <Grid.Resources>
-            <Style TargetType="TextBlock">
-                <Setter Property="Foreground" Value="White"/>
-            </Style>
-        </Grid.Resources>
-        
-        <!-- yours -->
-        <ScrollViewer Grid.Column="0">
-            <Grid Name="YourGrid">
+    <ScrollViewer>
+        <Grid Background="Black">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.Resources>
+                <Style TargetType="TextBlock">
+                    <Setter Property="Foreground" Value="White"/>
+                </Style>
+            </Grid.Resources>
+            
+            <!-- yours -->
+            <Grid Grid.Column="0" Name="YourGrid">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
             </Grid>
-        </ScrollViewer>
-        
-        <!-- base -->
-        <ScrollViewer Grid.Column="1">
-            <Grid Name="BaseGrid">
+            
+            
+            <!-- base -->
+            <Grid Grid.Column="1" Name="BaseGrid">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
             </Grid>
-        </ScrollViewer>
-        
-        <!-- theirs -->
-        <ScrollViewer Grid.Column="2">
-            <Grid Name="TheirGrid">
+            
+            
+            <!-- theirs -->
+            <Grid Grid.Column="2" Name="TheirGrid">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
             </Grid>
-        </ScrollViewer>
-        
-        
-    </Grid>
+            
+        </Grid>
+    </ScrollViewer>
     
 </Window>
