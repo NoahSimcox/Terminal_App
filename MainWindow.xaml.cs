@@ -68,24 +68,21 @@ namespace Terminal_App
                 InputBox.SelectionStart = InputBox.Text.Length;
             }
             
+            
             if (e.Key == VirtualKey.Up && AutocompletePopup.IsOpen)
             {
                 if (selectedItemIndex > 0)
                     selectedItemIndex--;
-
                 
             } else if (e.Key == VirtualKey.Down && AutocompletePopup.IsOpen)
             {
                 if (selectedItemIndex < SuggestionsList.Items.Count - 1)
                     selectedItemIndex++;
-
-            }
-            else 
+            }else 
                 selectedItemIndex = 0;
 
             
             SuggestionsList.SelectedIndex = selectedItemIndex;
-
         }
 
         private void KeyUpEvent(object sender, KeyRoutedEventArgs e)
@@ -108,14 +105,6 @@ namespace Terminal_App
             else 
                 AutocompletePopup.IsOpen = false;
             
-        }
-
-        private void MouseClicked(Object sender, PointerRoutedEventArgs e)
-        {
-            if (e.GetCurrentPoint(SuggestionsList).Properties.IsLeftButtonPressed)
-            {
-                InputBox.Text = SuggestionsList.SelectedItem.ToString();
-            }
         }
         
         private void AutocompletePopup_Opened(object sender, object e)
