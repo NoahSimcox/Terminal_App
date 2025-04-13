@@ -212,7 +212,7 @@ public class PseudoConsole: IDisposable
                 (void*)_pcHandle.DangerousGetHandle(),
                 (UIntPtr)sizeof(nint),
                 null,
-                null)){
+                (nuint?)null)){
                 
                 PInvoke.HeapFree(PInvoke.GetProcessHeap(),0,si.lpAttributeList); 
                 Console.WriteLine("Failed to update process heap");
