@@ -43,10 +43,11 @@ namespace Terminal_App
             InitializeComponent();
             string contents = _streamReader.ReadToEnd();
             _commands = contents.Split(",").ToList();
+            Directory2.Text = "Command: ";
         }
         
 
-        private void KeyDownEvent(object sender, KeyRoutedEventArgs e)
+        private new void KeyDownEvent(object sender, KeyRoutedEventArgs e)
         {
 
             if (e.Key == VirtualKey.Enter)
@@ -60,60 +61,60 @@ namespace Terminal_App
                 InputBox.Text = "";
             }
 
-            //
-            // if (e.Key == VirtualKey.Tab && AutocompletePopup.IsOpen)
-            // {
-            //     AutocompletePopup.IsOpen = false;
-            //     InputBox.Text = SuggestionsList.Items[_selectedItemIndex].ToString();
-            //     InputBox.Focus(FocusState.Programmatic);
-            //     e.Handled = true;
-            //     InputBox.SelectionStart = InputBox.Text.Length;
-            // }
-            //
-            //
-            // if (e.Key == VirtualKey.Up && AutocompletePopup.IsOpen)
-            // {
-            //     if (_selectedItemIndex > 0)
-            //         _selectedItemIndex--;
-            //
-            // }
-            // else if (e.Key == VirtualKey.Down && AutocompletePopup.IsOpen)
-            // {
-            //     if (_selectedItemIndex < SuggestionsList.Items.Count - 1)
-            //         _selectedItemIndex++;
-            //
-            // }
-            // else
-            //     _selectedItemIndex = 0;
-            //
-            //
-            // SuggestionsList.SelectedIndex = _selectedItemIndex;
-            // SuggestionsList.SelectedItem = SuggestionsList.Items[_selectedItemIndex];
-            //
-            // SuggestionsList.UpdateLayout();
-
+            
+            if (e.Key == VirtualKey.Tab && AutocompletePopup.IsOpen)
+            {
+                AutocompletePopup.IsOpen = false;
+                InputBox.Text = SuggestionsList.Items[_selectedItemIndex].ToString();
+                InputBox.Focus(FocusState.Programmatic);
+                e.Handled = true;
+                InputBox.SelectionStart = InputBox.Text.Length;
+            }
+            
+            
+            if (e.Key == VirtualKey.Up && AutocompletePopup.IsOpen)
+            {
+                if (_selectedItemIndex > 0)
+                    _selectedItemIndex--;
+            
+            }
+            else if (e.Key == VirtualKey.Down && AutocompletePopup.IsOpen)
+            {
+                if (_selectedItemIndex < SuggestionsList.Items.Count - 1)
+                    _selectedItemIndex++;
+            
+            }
+            else
+                _selectedItemIndex = 0;
+            
+            
+            SuggestionsList.SelectedIndex = _selectedItemIndex;
+            SuggestionsList.SelectedItem = SuggestionsList.Items[_selectedItemIndex];
+            
+            SuggestionsList.UpdateLayout();
+        
         }
-
-        private void KeyUpEvent(object sender, KeyRoutedEventArgs e)
+        
+        private new void KeyUpEvent(object sender, KeyRoutedEventArgs e)
         {
-            // string text = InputBox.Text;
-            //
-            // if (string.IsNullOrEmpty(text) || e.Key == VirtualKey.Tab)
-            // {
-            //     AutocompletePopup.IsOpen = false;
-            //     return;
-            // }
-            //
-            // var matches = _commands.Where(cmd => cmd.StartsWith(text, StringComparison.OrdinalIgnoreCase)).ToList();
-            //
-            // if (matches.Count > 0)
-            // {
-            //     SuggestionsList.ItemsSource = matches;
-            //     AutocompletePopup.IsOpen = true;
-            // }
-            // else
-            //     AutocompletePopup.IsOpen = false;
-            //
+            string text = InputBox.Text;
+            
+            if (string.IsNullOrEmpty(text) || e.Key == VirtualKey.Tab)
+            {
+                AutocompletePopup.IsOpen = false;
+                return;
+            }
+            
+            var matches = _commands.Where(cmd => cmd.StartsWith(text, StringComparison.OrdinalIgnoreCase)).ToList();
+            
+            if (matches.Count > 0)
+            {
+                SuggestionsList.ItemsSource = matches;
+                AutocompletePopup.IsOpen = true;
+            }
+            else
+                AutocompletePopup.IsOpen = false;
+            
         }
 
         private void AutocompletePopup_Opened(object sender, object e)
