@@ -46,16 +46,18 @@ public partial class GitHubClientWindow : Window
     public async Task Pull() => await _client.Pull();
 
 
-    private readonly string _settingsFilePath = "githubClientSettings.txt";
+    private readonly string _settingsFilePath = Path.Combine(AppContext.BaseDirectory, "GitClient", "githubClientSettings.txt");
     private void OnClosed(object sender, WindowEventArgs args)
     {
-        using StreamWriter writer = new StreamWriter(_settingsFilePath);
-        writer.WriteLine(RepoDirectory);
-        writer.WriteLine(User);
-        writer.WriteLine(Email);
+        // using StreamWriter writer = new StreamWriter(_settingsFilePath);
+        // writer.WriteLine(RepoDirectory);
+        // writer.WriteLine(User);
+        // writer.WriteLine(Email);
         
-        writer.Flush();
-        writer.Close();
+        File.WriteAllLines(_settingsFilePath, [RepoDirectory, User, Email]);
+        
+        // writer.Flush();
+        // writer.Close();
         
     }
     
