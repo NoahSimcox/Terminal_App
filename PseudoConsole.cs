@@ -15,11 +15,13 @@ using Markdig.Helpers;
 namespace testcmd;
 using System;
 using System.Runtime.InteropServices;
+using Microsoft.UI.Dispatching;
+using Microsoft.UI.Xaml.Controls;
 using Microsoft.Win32.SafeHandles;
 
 public class RingBuffer
 {
-    public AutoResetEvent waitHandle;
+    public DispatcherQueue DispatcherQueue;
     public (short, short) ViewportSize;
     public (int,int) BufferSize;
     private byte[,] _buffer;
@@ -28,7 +30,7 @@ public class RingBuffer
     private int _furthestWrite;
     public (short, short) CursorPos;
     public SemaphoreSlim BufferLock= new SemaphoreSlim(1,1);
-    public bool Dirty = false;
+    public TextBox TextBox;
     
     public RingBuffer((int,int) bufferSize,(short,short)viewportSize)
     {
@@ -153,7 +155,14 @@ public class RingBuffer
         int line = _ringLineNum + _viewPortTop + CursorPos.Item2;
         _furthestWrite = Math.Max(line+1,_furthestWrite);
         _buffer[(_ringLineNum+_viewPortTop+CursorPos.Item2)%BufferSize.Item2, CursorPos.Item1%ViewportSize.Item1] = value;
-        waitHandle.Set();
+        if(!DispatcherQueue.TryEnqueue(() =>
+        {
+
+            TextBox.Text = PrintString();
+        }))
+        {
+
+        }
     }
     
 }
@@ -172,7 +181,7 @@ public class PseudoConsole: IDisposable
     private Queue<byte> _stdinPipe= new();
     public RingBuffer Buffer;
     public List<byte> DebugList = [];
-    public PseudoConsole((int,int) bufferSize,(short,short) size, AutoResetEvent signal)
+    public PseudoConsole((int,int) bufferSize,(short,short) size, DispatcherQueue dispatcherQueue)
     {
         
         Size = size;
@@ -262,7 +271,7 @@ public class PseudoConsole: IDisposable
 
 
         Buffer = new RingBuffer(bufferSize, size);
-        Buffer.waitHandle = signal;
+        Buffer.DispatcherQueue = dispatcherQueue;
     }
     private async Task<(byte,bool)> ReadNext(CancellationToken ct)
     {
