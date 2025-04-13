@@ -21,6 +21,7 @@ using Windows.Foundation.Collections;
 using Windows.System;
 using Windows.UI;
 using Microsoft.UI;
+using Terminal_App.GitClient;
 using testcmd;
 
 namespace Terminal_App
@@ -121,7 +122,12 @@ namespace Terminal_App
         {
             InputBox.Focus(FocusState.Programmatic);
         }
-        
 
+
+        private void ButtonBase_OnClick(object sender, RoutedEventArgs e)
+        {
+            Window clientWindow = new GitHubClientWindow();
+            clientWindow.Activate();
+        }
     }
 }
