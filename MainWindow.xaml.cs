@@ -17,6 +17,8 @@ using Microsoft.UI.Xaml.Navigation;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.System;
+using Windows.UI;
+using Microsoft.UI;
 using testcmd;
 
 // To learn more about WinUI, the WinUI project structure,
@@ -34,6 +36,7 @@ namespace Terminal_App
        private StreamReader _streamReader = new StreamReader(Path.Combine(AppContext.BaseDirectory, "cmdCommands.txt"));
        private List<string> _commands;
        private int _selectedItemIndex = 0;
+       
        private PseudoConsole _pseudoConsole;
        private CancellationTokenSource _cts = new();
         private Microsoft.UI.Dispatching.DispatcherQueue _dispatcherQueue;
@@ -43,86 +46,27 @@ namespace Terminal_App
             _pseudoConsole = new PseudoConsole((1000,300),(200,200),_dispatcherQueue);
             this.InitializeComponent();
             
-            _pseudoConsole.Buffer.TextBox = OutputText;
-            Directory2.Text = _dirText;
+            // _pseudoConsole.Buffer.TextBox = OutputText;
+            // Directory2.Text = _dirText;
 
             Task.Run(async () => await _pseudoConsole.BufferLoop(_cts.Token));
-            string contents = _streamReader.ReadToEnd();
-            _commands = contents.Split(",").ToList();
+            
         }
+            
 
-        private void KeyDownEvent(object sender, KeyRoutedEventArgs e)
+        
+        private void TerminalTabs_AddTabButtonClick(TabView sender, object args)
         {
+            var newTab = new TabViewItem();
 
-            if (e.Key == VirtualKey.Enter)
-            {
-                Task.Run(async () => await _pseudoConsole.SendCommand(InputBox.Text,_cts.Token));
+            newTab.Header = $"Terminal {TerminalTabs.TabItems.Count + 1}";
+            newTab.Content = new UserControl();
 
-                // TextBox outputBox = OutputText;
-                // outputBox.Text += _dirText +" "+ InputBox.Text;
-                //
-                // if (outputBox.Text == OutputText.Text)
-                //     outputBox.Text += " " + "\n";
-                // else
-                //     outputBox.Text += "\n";
-                //
-                 InputBox.Text = "";
-                //
-                // ScrollViewer.ChangeView(null, ScrollViewer.ExtentHeight, null);
-            }
-            
-
-            if (e.Key == VirtualKey.Tab && AutocompletePopup.IsOpen)
-            {
-                InputBox.Text = SuggestionsList.Items[_selectedItemIndex].ToString();
-                InputBox.Focus(FocusState.Programmatic);
-                e.Handled = true;
-                InputBox.SelectionStart = InputBox.Text.Length;
-            }
-            
-            
-            if (e.Key == VirtualKey.Up && AutocompletePopup.IsOpen)
-            {
-                if (_selectedItemIndex > 0)
-                    _selectedItemIndex--;
-                
-            } else if (e.Key == VirtualKey.Down && AutocompletePopup.IsOpen)
-            {
-                if (_selectedItemIndex < SuggestionsList.Items.Count - 1)
-                    _selectedItemIndex++;
-            }else 
-                _selectedItemIndex = 0;
-
-            
-            SuggestionsList.SelectedIndex = _selectedItemIndex;
-        }
-
-        private void KeyUpEvent(object sender, KeyRoutedEventArgs e)
-        {
-            string text = InputBox.Text;
-            
-            if (string.IsNullOrEmpty(text))
-            {
-                AutocompletePopup.IsOpen = false;
-                return;
-            }
-            
-            var matches = _commands.Where(cmd => cmd.StartsWith(text, StringComparison.OrdinalIgnoreCase)).ToList();
-            
-            if (matches.Count > 0)
-            {
-                SuggestionsList.ItemsSource = matches;
-                AutocompletePopup.IsOpen = true;
-            }
-            else 
-                AutocompletePopup.IsOpen = false;
-            
+            TerminalTabs.TabItems.Add(newTab);
+            TerminalTabs.SelectedItem = newTab;
         }
         
-        private void AutocompletePopup_Opened(object sender, object e)
-        {
-            InputBox.Focus(FocusState.Programmatic);
-        }
-
     }
+
+
 }
