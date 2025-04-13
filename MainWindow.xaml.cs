@@ -39,20 +39,71 @@ namespace Terminal_App
 
        private string _dirText = "C:\\>";
        public int ActiveTab;
+       public List<PseudoConsole> PseudoConsoles = [];
+       private Microsoft.UI.Dispatching.DispatcherQueue _dispatcherQueue;
+       public List<CancellationTokenSource> CancellationTokenSources = [];
+       public List<SemaphoreSlim> SemaphoreSlims = [];
+       public ConcurrentQueue<byte[]> _command =new();
+       public void AddConsole()
+       {
+           var newTab = new TabViewItem();
+           newTab.Header = $"Terminal {TerminalTabs.TabItems.Count + 1}";
+           var userControl = new UserControl(TerminalTabs.TabItems.Count,this);
+           newTab.Content = userControl;
+           var pseudoConsole = new PseudoConsole((3000, 3000), ((short)300,(short)300),Microsoft.UI.Dispatching.DispatcherQueue.GetForCurrentThread());
+           CancellationTokenSource cts = new CancellationTokenSource();
+           SemaphoreSlims.Add(new SemaphoreSlim(0,1));
+           CancellationTokenSources.Add(cts);
+           TerminalTabs.TabItems.Add(newTab);
+
+           int id = TerminalTabs.TabItems.Count - 1;
+           Task.Run(async()=>await pseudoConsole.BufferLoop(cts.Token));
+           Task.Run(async()=>
+           {
+               while(!cts.IsCancellationRequested)
+               {
+                   await Task.Delay(1000);
+                   if(ActiveTab != id)
+                   {
+                       continue;
+                   }
+                   _dispatcherQueue.TryEnqueue(() =>
+                   {
+                       // double vertiOffset = ScrollViewer.VerticalOffset;
+                       userControl.OutputText.Text = pseudoConsole.Buffer.PrintString();
+                       // ScrollViewer.ChangeView(null,vertiOffset,null);
+                   });
+               }
+           });
+           Task.Run(async()=>
+           {
+               while(!cts.IsCancellationRequested)
+               {
+                   await SemaphoreSlims[id].WaitAsync();
+                   if(_command.TryDequeue(out var result))
+                   {
+                        
+                       await pseudoConsole.SendInput(result, cts.Token);
+                   }else{
+                        
+                       await pseudoConsole.SendCommand("yo the command is null", cts.Token);
+                   }
+               } 
+                
+           });
+           TerminalTabs.SelectedItem = newTab;
+       }
         public MainWindow()
         {
-            this.InitializeComponent();
+            _dispatcherQueue = Microsoft.UI.Dispatching.DispatcherQueue.GetForCurrentThread();
+            InitializeComponent();
+
+            // _pseudoConsole.Buffer.TextBox = OutputText;
         }
 
         private void TerminalTabs_AddTabButtonClick(TabView sender, object args)
         {
-            var newTab = new TabViewItem();
-
-            newTab.Header = $"Terminal {TerminalTabs.TabItems.Count + 1}";
-            newTab.Content = new UserControl(TerminalTabs.TabItems.Count,this);
-
-            TerminalTabs.TabItems.Add(newTab);
-            TerminalTabs.SelectedItem = newTab;
+            AddConsole();
         }
         private const uint MAPVK_VK_TO_CHAR = 2;
 
