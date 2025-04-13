@@ -27,12 +27,23 @@
         </Grid.Resources>
         
         <!-- changed files list -->
-        <TextBlock Text="Changed Files"/>
+        <!--Width="20" Height="20"-->
+        <Grid Grid.Row="0" Grid.Column="0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            
+            <Button Grid.Row="0" Content="⟳" Click="{x:Bind RefreshChangedFilesText}"/>
+            <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
+                <TextBlock x:Name="ChangedFilesText" TextTrimming="CharacterEllipsis" />
+            </ScrollViewer>
+        </Grid>
         
         <!-- git control -->
         <StackPanel Grid.Row="1" Grid.Column="0">
             <StackPanel Orientation="Vertical" VerticalAlignment="Bottom" >
-                <TextBox PlaceholderText="CommitMessage" Text="{x:Bind CommitMessage, Mode=TwoWay}"/> 
+                <TextBox PlaceholderText="Message" Text="{x:Bind CommitMessage, Mode=TwoWay}"/> 
                 
                 <Grid>
                     <Grid.ColumnDefinitions>
