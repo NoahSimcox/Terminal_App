@@ -1,20 +1,19 @@
 
 using System;
 using System.IO;
-using System.Linq; // confliction
+using System.Linq;
 using System.Text.Json;
 using System.Threading.Tasks;
 using LibGit2Sharp;
 using Microsoft.UI.Xaml; 
-using JsonSerializer = Newtonsoft.Json.JsonSerializer; 
+using JsonSerializer = Newtonsoft.Json.JsonSerializer; // padpsdapoodsa
 
 namespace Terminal_App.GitClient; // a change
-
-//
 
 public partial class GitHubClientWindow : Window
 {
     private GitHubClient _client;
+    
     public GitHubClientWindow()
     {
         _client = new GitHubClient();
