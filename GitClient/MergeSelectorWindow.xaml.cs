@@ -11,15 +11,19 @@ public partial class MergeSelectorWindow : Window
     private string _selectedConflictPath = "";
     private Repository _repo;
     private string _repoPath;
+
+    private Signature _signature;
     
-    public MergeSelectorWindow(ConflictCollection conflicts, Repository repo, string repoPath)
+    
+    public MergeSelectorWindow(ConflictCollection conflicts, Repository repo, string repoPath, Signature signature)
     {
         InitializeComponent();
         _conflicts = conflicts;
         _repo = repo;
         _repoPath = repoPath;
+        _signature = signature;
         
-        foreach (Conflict c in conflicts)
+        foreach (Conflict c in conflicts) // a line that is different
         {
             Button b = new Button
             {
@@ -65,6 +69,10 @@ public partial class MergeSelectorWindow : Window
     {
         
     }
-    
+
+    private void OnClosed(object sender, WindowEventArgs args)
+    {
+        _repo.Commit("merge", _signature, _signature);
+    }
 }
 

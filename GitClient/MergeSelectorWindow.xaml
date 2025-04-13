@@ -7,6 +7,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
+    Closed="OnClosed"
     Title="Manage Merge">
     
     <Grid Background="Black">
@@ -40,9 +41,9 @@
                 </Grid.RowDefinitions>
                 
                 <StackPanel Orientation="Vertical" Grid.Row="0">
-                    <Button Content="Merge"/>
-                    <Button Content="Accept Yours"/>
-                    <Button Content="Accept Theirs"/>
+                    <Button Content="Merge" Click="{x:Bind Merge}"/>
+                    <Button Content="Accept Yours" Click="{x:Bind AcceptYours}"/>
+                    <Button Content="Accept Theirs" Click="{x:Bind AcceptTheirs}"/>
                 </StackPanel>
                 
                 <Button Grid.Row="1" Content="Abort" />

@@ -17,7 +17,7 @@ public class GitHubClient
     private string? _oauthToken;
 
     private string _localRepoDirectory = "";
-    private Signature Signature => new (new Identity(_username, _email), DateTime.Now);
+    public Signature Signature => new (new Identity(_username, _email), DateTime.Now);
 
     public Repository? repo;
     

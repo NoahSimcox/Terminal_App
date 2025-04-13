@@ -61,7 +61,7 @@ public partial class GitHubClientWindow : Window
         if (conflicts == null) return;
 
         // open merge window
-        Window mergeWindow = new MergeSelectorWindow(conflicts, _client.repo, RepoDirectory);
+        Window mergeWindow = new MergeSelectorWindow(conflicts, _client.repo, RepoDirectory, _client.Signature);
         mergeWindow.Activate();
     }
 
@@ -72,7 +72,7 @@ public partial class GitHubClientWindow : Window
         if (conflicts == null) return;
 
         // open merge window
-        Window mergeWindow = new MergeSelectorWindow(conflicts, _client.repo, RepoDirectory);
+        Window mergeWindow = new MergeSelectorWindow(conflicts, _client.repo, RepoDirectory, _client.Signature);
         mergeWindow.Activate();
     }
     
