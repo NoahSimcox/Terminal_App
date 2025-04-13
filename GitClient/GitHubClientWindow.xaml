@@ -43,7 +43,7 @@
         <!-- git control -->
         <StackPanel Grid.Row="1" Grid.Column="0">
             <StackPanel Orientation="Vertical" VerticalAlignment="Bottom" >
-                <TextBox PlaceholderText="CommitMessage" Text="{x:Bind CommitMessage, Mode=TwoWay}"/> 
+                <TextBox PlaceholderText="Message" Text="{x:Bind CommitMessage, Mode=TwoWay}"/> 
                 
                 <Grid>
                     <Grid.ColumnDefinitions>

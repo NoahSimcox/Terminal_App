@@ -64,10 +64,8 @@ public partial class GitHubClientWindow : Window
         if (conflicts == null) return;
 
         // open merge window
-        foreach (Conflict c in conflicts)
-        {
-            
-        }
+        Window mergeWindow = new MergeSelectorWindow(conflicts);
+        mergeWindow.Activate();
     }
     
 
