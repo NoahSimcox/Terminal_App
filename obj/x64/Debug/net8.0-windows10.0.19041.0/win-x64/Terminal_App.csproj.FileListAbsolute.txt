@@ -255,3 +255,4 @@ C:\Users\nssim\source\repos\Terminal_App\obj\x64\Debug\net8.0-windows10.0.19041.
 C:\Users\nssim\source\repos\Terminal_App\obj\x64\Debug\net8.0-windows10.0.19041.0\win-x64\ProjectArchitectures.txt
 C:\Users\nssim\source\repos\Terminal_App\bin\x64\Debug\net8.0-windows10.0.19041.0\win-x64\Octokit.dll
 C:\Users\nssim\source\repos\Terminal_App\bin\x64\Debug\net8.0-windows10.0.19041.0\win-x64\cmdCommands.txt
+C:\Users\nssim\source\repos\Terminal_App\obj\x64\Debug\net8.0-windows10.0.19041.0\win-x64\Terminal_App.sourcelink.json

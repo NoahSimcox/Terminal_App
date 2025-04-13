@@ -29,25 +29,25 @@
     <AppXManifest Include="C:\Users\nssim\source\repos\Terminal_App\bin\x64\Debug\net8.0-windows10.0.19041.0\win-x64\AppxManifest.xml">
       <PackagePath>AppxManifest.xml</PackagePath>
       <ReRegisterAppIfChanged>true</ReRegisterAppIfChanged>
-      <Modified>2025-04-12T22:34:46.246</Modified>
+      <Modified>2025-04-13T01:36:24.886</Modified>
     </AppXManifest>
   </ItemGroup>
   <ItemGroup>
     <AppxPackagedFile Include="C:\Users\nssim\source\repos\Terminal_App\bin\x64\Debug\net8.0-windows10.0.19041.0\win-x64\resources.pri">
       <PackagePath>resources.pri</PackagePath>
-      <Modified>2025-04-12T22:12:48.401</Modified>
+      <Modified>2025-04-13T01:26:12.886</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\nssim\source\repos\Terminal_App\bin\x64\Debug\net8.0-windows10.0.19041.0\win-x64\Terminal_App.runtimeconfig.json">
       <PackagePath>Terminal_App.runtimeconfig.json</PackagePath>
-      <Modified>2025-04-12T01:43:38.572</Modified>
+      <Modified>2025-04-13T01:26:12.687</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\nssim\source\repos\Terminal_App\bin\x64\Debug\net8.0-windows10.0.19041.0\win-x64\Terminal_App.dll">
       <PackagePath>Terminal_App.dll</PackagePath>
-      <Modified>2025-04-12T22:34:45.835</Modified>
+      <Modified>2025-04-13T01:35:21.412</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\nssim\source\repos\Terminal_App\obj\x64\Debug\net8.0-windows10.0.19041.0\win-x64\apphost.exe">
       <PackagePath>Terminal_App.exe</PackagePath>
-      <Modified>2025-04-12T22:34:45.847</Modified>
+      <Modified>2025-04-13T01:35:21.433</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\nssim\source\repos\Terminal_App\cmdCommands.txt">
       <PackagePath>cmdCommands.txt</PackagePath>
@@ -895,7 +895,7 @@
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\nssim\source\repos\Terminal_App\bin\x64\Debug\net8.0-windows10.0.19041.0\win-x64\Terminal_App.deps.json">
       <PackagePath>Terminal_App.deps.json</PackagePath>
-      <Modified>2025-04-12T22:10:20.508</Modified>
+      <Modified>2025-04-13T01:26:12.636</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\nssim\source\repos\Terminal_App\Assets\LockScreenLogo.scale-200.png">
       <PackagePath>Assets\LockScreenLogo.scale-200.png</PackagePath>
