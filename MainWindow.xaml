@@ -28,7 +28,7 @@
                           HorizontalAlignment="Stretch"
                           VerticalAlignment="Stretch"
                           FontFamily="Consolas, Courier New"
-                          
+                          TabCloseRequested="TerminalTabs_OnTabCloseRequested"
                           AddTabButtonClick="TerminalTabs_AddTabButtonClick"
                           SelectionChanged="TerminalTabs_OnSelectionChanged">
                 
