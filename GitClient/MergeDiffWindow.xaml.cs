@@ -42,6 +42,7 @@ public partial class MergeDiffWindow : Window
         for (int i = 0; i < youBaseDiff.LinesDeleted; i++)
         {
             AddButton(YourGrid, youBaseDiff.DeletedLines[i]);
+            AddText(YourGrid, " line to remove here", youBaseDiff.DeletedLines[i].LineNumber);
             yourRemovalLineNumbers[i] = youBaseDiff.DeletedLines[i].LineNumber;
         }
 
@@ -58,6 +59,7 @@ public partial class MergeDiffWindow : Window
         for (int i = 0; i < themBaseDiff.LinesDeleted; i++)
         {
             AddButton(TheirGrid, themBaseDiff.DeletedLines[i]);
+            AddText(TheirGrid, " line to remove here", themBaseDiff.DeletedLines[i].LineNumber);
             theirRemovalLineNumbers[i] = themBaseDiff.DeletedLines[i].LineNumber;
         }
         
@@ -68,10 +70,11 @@ public partial class MergeDiffWindow : Window
         int theirCurrentLine = 0;
         for (int i = 0; i < lines; i++)
         {
-            if (yourRemovalLineNumbers.Contains(yourCurrentLine))
+            if (theirRemovalLineNumbers.Contains(theirCurrentLine) || yourRemovalLineNumbers.Contains(yourCurrentLine))
+            {
+                baseCurrentLine++;
                 continue;
-            if (theirRemovalLineNumbers.Contains(theirCurrentLine))
-                continue;
+            }
             
             if (yourAdditionLineNumbers.Contains(yourCurrentLine))
             {
