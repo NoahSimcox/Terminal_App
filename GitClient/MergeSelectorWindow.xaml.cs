@@ -2,7 +2,6 @@ using System.IO;
 using LibGit2Sharp;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
-using Microsoft.UI.Xaml.Controls.Primitives;
 
 namespace Terminal_App.GitClient;
 
@@ -14,12 +13,11 @@ public partial class MergeSelectorWindow : Window
     private string _repoPath;
 
     private Signature _signature;
-    private ToggleButton? _previousButton = null;
     
     
     public MergeSelectorWindow(ConflictCollection conflicts, Repository repo, string repoPath, Signature signature)
     {
-        InitializeComponent(); // intinosiehfoseh
+        InitializeComponent(); // noah kys
         _conflicts = conflicts;
         _repo = repo;
         _repoPath = repoPath;
@@ -27,25 +25,20 @@ public partial class MergeSelectorWindow : Window
         
         foreach (Conflict c in conflicts) // a line that is different sdhfgksjdfhkjashdkjashdkjh
         {
-            ToggleButton b = new ToggleButton()
+            Button b = new Button
             {
                 Content = c.Ours.Path,
             };
             b.Click += SelectConflict;
             MergeButtons.Children.Add(b);
-        }
 
+        }
     }
 
     public void SelectConflict(object sender, RoutedEventArgs e)
     {
-        if (sender is ToggleButton { Content: string content } button)
-        {
+        if (sender is Button { Content: string content })
             _selectedConflictPath = content;
-            if (_previousButton != null)
-                _previousButton.IsChecked = false;
-            _previousButton = button;
-        }
     }
 
     public void AcceptTheirs()
