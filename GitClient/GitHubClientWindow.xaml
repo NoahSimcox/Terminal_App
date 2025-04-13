@@ -27,7 +27,11 @@
         </Grid.Resources>
         
         <!-- changed files list -->
-        <TextBlock Text="Changed Files"/>
+        <!--Width="20" Height="20"-->
+        <StackPanel Grid.Row="0" Grid.Column="0">
+            <Button Content="⟳" Click="{x:Bind RefreshChangedFilesText}" />
+            <TextBlock x:Name="ChangedFilesText"/>
+        </StackPanel>
         
         <!-- git control -->
         <StackPanel Grid.Row="1" Grid.Column="0">

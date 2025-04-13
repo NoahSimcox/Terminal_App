@@ -26,9 +26,7 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <None Remove="GitClient\githubClientSettings.txt" />
-    <Content Include="GitClient\githubClientSettings.txt">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
+    <None Remove="githubClientSettings.txt" />
   </ItemGroup>
 
   <ItemGroup>

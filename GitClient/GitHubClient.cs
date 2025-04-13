@@ -133,11 +133,17 @@ public class GitHubClient
 
     public string[] GetChangedFiles()
     {
-        using var repo = new Repository(_localRepoDirectory);  
+        if (string.IsNullOrEmpty(_localRepoDirectory)) throw new Exception("No Repository Specified");
+        
+        using var repo = new Repository(_localRepoDirectory);
         var status = repo.RetrieveStatus();
-        // status.Missing
 
-        return status.Modified.Concat(status.Added).Select(item => item.FilePath).ToArray();
+        // TODO: status.Missing
+        string[] addedAndModified = status.Modified.Concat(status.Added).Select(item => item.FilePath).ToArray();
+        if (addedAndModified.Length == 0) throw new Exception("No Local Changes");
+
+        return addedAndModified;
+        
     }
     
     
