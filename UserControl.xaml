@@ -78,13 +78,14 @@
                    Opened = "AutocompletePopup_Opened">
 
                 <Border Background="Black" BorderBrush="White" BorderThickness="1">
-                    <!-- <ListBox x:Name="SuggestionsList" -->
-                    <!--          Background="Black" -->
-                    <!--          Foreground="White" -->
-                    <!--          FontSize="20" -->
-                    <!--          SelectionMode="Single" -->
-                    <!--          SelectedIndex="0" -->
-                    <!--          Template="{StaticResource Control}"/> -->
+                    <ListBox x:Name="SuggestionsList"
+                             Background="Black"
+                             Foreground="White"
+                             FontSize="20"
+                             SelectionMode="Single"
+                             SelectedIndex="0"
+                             ItemContainerStyle="{StaticResource ListBoxItemStyle}"
+                             Template="{StaticResource Control}"/>
                 </Border>
             </Popup>
         </Grid>
