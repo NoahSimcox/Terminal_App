@@ -67,9 +67,9 @@ public partial class MergeDiffWindow : Window
             }
             
             // at this point the line must be empty (no additions)
-            AddText(BaseGrid, baseLines[baseCurrentLine++], baseCurrentLine);
-            AddText(YourGrid, yourLines[yourCurrentLine++], yourCurrentLine);
-            AddText(TheirGrid, theirLines[theirCurrentLine++], theirCurrentLine);
+            AddText(BaseGrid, baseLines[baseCurrentLine++], i);
+            AddText(YourGrid, yourLines[yourCurrentLine++], i);
+            AddText(TheirGrid, theirLines[theirCurrentLine++], i);
 
         }
 
