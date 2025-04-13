@@ -10,6 +10,7 @@ using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Controls.Primitives;
 using Microsoft.UI.Xaml.Data;
+using Microsoft.UI.Dispatching;
 using Microsoft.UI.Xaml.Input;
 using Microsoft.UI.Xaml.Media;
 using Microsoft.UI.Xaml.Navigation;
@@ -35,25 +36,17 @@ namespace Terminal_App
        private int _selectedItemIndex = 0;
        private PseudoConsole _pseudoConsole;
        private CancellationTokenSource _cts = new();
-       private AutoResetEvent signal = new AutoResetEvent(false);
-        public void UpdateScreenThread()
-        {
-            while(true)
-            {
-                signal.WaitOne();
-                OutputText.Text = _pseudoConsole.Buffer.PrintString();
-            }
-
-        } 
+        private Microsoft.UI.Dispatching.DispatcherQueue _dispatcherQueue;
         public MainWindow()
         {
-            _pseudoConsole = new PseudoConsole((1000,300),(200,200),signal);
-            Thread thread = new Thread(UpdateScreenThread);
-            thread.Start();
-            Task.Run(async () => await _pseudoConsole.BufferLoop(_cts.Token));
+            _dispatcherQueue = Microsoft.UI.Dispatching.DispatcherQueue.GetForCurrentThread();
+            _pseudoConsole = new PseudoConsole((1000,300),(200,200),_dispatcherQueue);
             this.InitializeComponent();
+            
+            _pseudoConsole.Buffer.TextBox = OutputText;
             Directory2.Text = _dirText;
 
+            Task.Run(async () => await _pseudoConsole.BufferLoop(_cts.Token));
             string contents = _streamReader.ReadToEnd();
             _commands = contents.Split(",").ToList();
         }
@@ -64,6 +57,7 @@ namespace Terminal_App
             if (e.Key == VirtualKey.Enter)
             {
                 Task.Run(async () => await _pseudoConsole.SendCommand(InputBox.Text,_cts.Token));
+
                 // TextBox outputBox = OutputText;
                 // outputBox.Text += _dirText +" "+ InputBox.Text;
                 //
@@ -72,7 +66,7 @@ namespace Terminal_App
                 // else
                 //     outputBox.Text += "\n";
                 //
-                // InputBox.Text = "";
+                 InputBox.Text = "";
                 //
                 // ScrollViewer.ChangeView(null, ScrollViewer.ExtentHeight, null);
             }
