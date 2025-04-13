@@ -108,6 +108,7 @@
                      Padding="0, 0, 0, 8"
                      IsReadOnly="True"
                      Style="{StaticResource TerminalTextBoxStyle}"
+                     KeyDown="OutputText_OnKeyDown"
                      BorderThickness="0"/>
             </ScrollViewer>
         </Grid>
