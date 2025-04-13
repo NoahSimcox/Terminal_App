@@ -5,10 +5,10 @@ using System.Linq;
 using System.Text.Json;
 using System.Threading.Tasks;
 using LibGit2Sharp;
-using Microsoft.UI.Xaml;
+using Microsoft.UI.Xaml; // bingition
 using JsonSerializer = Newtonsoft.Json.JsonSerializer; // bingus
 
-namespace Terminal_App.GitClient; // a change
+namespace Terminal_App.GitClient; 
 
 public partial class GitHubClientWindow : Window
 {
