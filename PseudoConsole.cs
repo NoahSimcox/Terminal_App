@@ -1,7 +1,10 @@
 ﻿using System.Collections.Concurrent;
+using System.Collections.Generic;
+using System.IO;
 using System.IO.Pipelines;
-using System.Management.Automation.Host;
 using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
 using Windows.Win32;
 using Windows.Win32.Foundation;
 using Windows.Win32.Security;
@@ -209,7 +212,7 @@ public class PseudoConsole: IDisposable
                 (void*)_pcHandle.DangerousGetHandle(),
                 (UIntPtr)sizeof(nint),
                 null,
-                null)){
+                (nuint?)null)){
                 
                 PInvoke.HeapFree(PInvoke.GetProcessHeap(),0,si.lpAttributeList); 
                 Console.WriteLine("Failed to update process heap");
