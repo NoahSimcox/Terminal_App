@@ -19,7 +19,7 @@ using Microsoft.Win32.SafeHandles;
 
 public class RingBuffer
 {
-    
+    public AutoResetEvent waitHandle;
     public (short, short) ViewportSize;
     public (int,int) BufferSize;
     private byte[,] _buffer;
@@ -27,6 +27,8 @@ public class RingBuffer
     private int _viewPortTop;
     private int _furthestWrite;
     public (short, short) CursorPos;
+    public SemaphoreSlim BufferLock= new SemaphoreSlim(1,1);
+    public bool Dirty = false;
     
     public RingBuffer((int,int) bufferSize,(short,short)viewportSize)
     {
@@ -34,8 +36,26 @@ public class RingBuffer
         BufferSize = bufferSize;
         _buffer =  new byte[bufferSize.Item1, bufferSize.Item2];
     }
+    public string PrintString()
+    {
+        StringBuilder sb = new StringBuilder();
+        int line = _viewPortTop-1;
+        while(line != _furthestWrite)
+        {
+            line++;
+            line%= BufferSize.Item1;
+            for(int i=0;i<ViewportSize.Item2;i++)
+            {
+                sb.Append((char)_buffer[line,i]);
+            }
+
+            sb.AppendLine();
+        }
+        return sb.ToString();
+    }
     public void Print()
     {
+        
         Console.Clear();
         int line = _viewPortTop-1;
         while(line != _furthestWrite)
@@ -133,6 +153,7 @@ public class RingBuffer
         int line = _ringLineNum + _viewPortTop + CursorPos.Item2;
         _furthestWrite = Math.Max(line+1,_furthestWrite);
         _buffer[(_ringLineNum+_viewPortTop+CursorPos.Item2)%BufferSize.Item2, CursorPos.Item1%ViewportSize.Item1] = value;
+        waitHandle.Set();
     }
     
 }
@@ -151,7 +172,7 @@ public class PseudoConsole: IDisposable
     private Queue<byte> _stdinPipe= new();
     public RingBuffer Buffer;
     public List<byte> DebugList = [];
-    public PseudoConsole((int,int) bufferSize,(short,short) size)
+    public PseudoConsole((int,int) bufferSize,(short,short) size, AutoResetEvent signal)
     {
         
         Size = size;
@@ -241,6 +262,7 @@ public class PseudoConsole: IDisposable
 
 
         Buffer = new RingBuffer(bufferSize, size);
+        Buffer.waitHandle = signal;
     }
     private async Task<(byte,bool)> ReadNext(CancellationToken ct)
     {

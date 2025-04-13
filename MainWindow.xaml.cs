@@ -4,6 +4,8 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
+using System.Threading;
+using System.Threading.Tasks;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Controls.Primitives;
@@ -14,6 +16,7 @@ using Microsoft.UI.Xaml.Navigation;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.System;
+using testcmd;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -30,9 +33,24 @@ namespace Terminal_App
        private StreamReader _streamReader = new StreamReader(Path.Combine(AppContext.BaseDirectory, "cmdCommands.txt"));
        private List<string> _commands;
        private int _selectedItemIndex = 0;
-        
+       private PseudoConsole _pseudoConsole;
+       private CancellationTokenSource _cts = new();
+       private AutoResetEvent signal = new AutoResetEvent(false);
+        public void UpdateScreenThread()
+        {
+            while(true)
+            {
+                signal.WaitOne();
+                OutputText.Text = _pseudoConsole.Buffer.PrintString();
+            }
+
+        } 
         public MainWindow()
         {
+            _pseudoConsole = new PseudoConsole((1000,300),(200,200),signal);
+            Thread thread = new Thread(UpdateScreenThread);
+            thread.Start();
+            Task.Run(async () => await _pseudoConsole.BufferLoop(_cts.Token));
             this.InitializeComponent();
             Directory2.Text = _dirText;
 
@@ -45,17 +63,18 @@ namespace Terminal_App
 
             if (e.Key == VirtualKey.Enter)
             {
-                TextBox outputBox = OutputText;
-                outputBox.Text += _dirText +" "+ InputBox.Text;
-                
-                if (outputBox.Text == OutputText.Text)
-                    outputBox.Text += " " + "\n";
-                else
-                    outputBox.Text += "\n";
-                
-                InputBox.Text = "";
-                
-                ScrollViewer.ChangeView(null, ScrollViewer.ExtentHeight, null);
+                Task.Run(async () => await _pseudoConsole.SendCommand(InputBox.Text,_cts.Token));
+                // TextBox outputBox = OutputText;
+                // outputBox.Text += _dirText +" "+ InputBox.Text;
+                //
+                // if (outputBox.Text == OutputText.Text)
+                //     outputBox.Text += " " + "\n";
+                // else
+                //     outputBox.Text += "\n";
+                //
+                // InputBox.Text = "";
+                //
+                // ScrollViewer.ChangeView(null, ScrollViewer.ExtentHeight, null);
             }
             
 
