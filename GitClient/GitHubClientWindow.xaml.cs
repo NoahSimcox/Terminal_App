@@ -20,11 +20,6 @@ public partial class GitHubClientWindow : Window
         InitializeComponent();
         LoadSettings();
         RefreshChangedFilesText();
-
-
-        RepoDirectory = "C:\\Users\\finne\\RiderProjects\\Terminal_App";
-        User = "Finnerex";
-        Email = "finnerex@gmail.com";
     }
 
     public string RepoDirectory

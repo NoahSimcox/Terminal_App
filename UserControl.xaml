@@ -47,7 +47,8 @@
         <Grid Grid.Row="1" Grid.Column="0">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="*"/>    
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>  
             </Grid.ColumnDefinitions>
 
             <TextBox x:Name="Directory2" 
@@ -69,6 +70,17 @@
                      KeyUp="KeyUpEvent"
                      KeyDown="KeyDownEvent"/>
             
+            <Border Grid.Column="2" BorderThickness="0,1,0,0"
+                    BorderBrush="White"
+                    Padding="0, 3, 0, 0">
+            <Button Grid.Column="2"
+                    Content="Git Client"
+                    Click="ButtonBase_OnClick"
+                    HorizontalAlignment="Right"
+                    VerticalAlignment="Stretch"
+                    CornerRadius="0"/>
+            </Border>
+            
             <Popup x:Name="AutocompletePopup"
                    PlacementTarget="{x:Bind InputBox}"
                    DesiredPlacement="Top"
@@ -84,8 +96,8 @@
                              FontSize="20"
                              SelectionMode="Single"
                              SelectedIndex="0"
-                             ItemContainerStyle="{StaticResource ListBoxItemStyle}"
-                             Template="{StaticResource Control}"/>
+                             ItemContainerStyle="{StaticResource AutocompleteItemStyle}">
+                    </ListBox>
                 </Border>
             </Popup>
         </Grid>

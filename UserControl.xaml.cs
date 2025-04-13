@@ -23,6 +23,7 @@ using Windows.System;
 using Windows.UI;
 using Windows.UI.Core;
 using Microsoft.UI;
+using Terminal_App.GitClient;
 using testcmd;
 
 namespace Terminal_App
@@ -111,6 +112,7 @@ namespace Terminal_App
             if (matches.Count > 0)
             {
                 SuggestionsList.ItemsSource = matches;
+
                 AutocompletePopup.IsOpen = true;
             }
             else
@@ -122,38 +124,57 @@ namespace Terminal_App
         {
             InputBox.Focus(FocusState.Programmatic);
         }
-        
+
+
         private void OutputText_OnKeyDown(object sender, KeyRoutedEventArgs e)
         {
-            if(e.Key == VirtualKey.Back)
+            if (e.Key == VirtualKey.Back)
             {
                 MainWindow._command.Enqueue([0x7f]);
                 try
-                {                
+                {
                     MainWindow.SemaphoreSlims[Id].Release();
-                }catch{}
+                }
+                catch
+                {
+                }
+
                 return;
             }
+
             uint result = MapVirtualKey((uint)e.Key, MAPVK_VK_TO_CHAR);
-            if(result!=0)
+            if (result != 0)
             {
-                bool b = Microsoft.UI.Input.InputKeyboardSource.GetKeyStateForCurrentThread(VirtualKey.Shift).HasFlag(CoreVirtualKeyStates.Down);
+                bool b = Microsoft.UI.Input.InputKeyboardSource.GetKeyStateForCurrentThread(VirtualKey.Shift)
+                    .HasFlag(CoreVirtualKeyStates.Down);
                 var character = (char)result;
-                if(!b)
+                if (!b)
                 {
                     result = Char.ToLower(character);
-                }else{
+                }
+                else
+                {
                     result = Char.ToUpper(character);
                 }
+
                 MainWindow._command.Enqueue([(byte)result]);
                 try
-                {                
+                {
                     MainWindow.SemaphoreSlims[Id].Release();
-                }catch{}
+                }
+                catch
+                {
+                }
             }
- 
 
         }
+
+        private void ButtonBase_OnClick(object sender, RoutedEventArgs e)
+        {
+            Window clientWindow = new GitHubClientWindow();
+            clientWindow.Activate();
+        }
+        
 
         private const uint MAPVK_VK_TO_CHAR = 2;
  
