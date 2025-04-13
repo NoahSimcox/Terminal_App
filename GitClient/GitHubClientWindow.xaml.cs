@@ -4,7 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Text.Json;
 using System.Threading.Tasks;
-using LibGit2Sharp;// lkkllkklkl
+using LibGit2Sharp;
 using Microsoft.UI.Xaml; 
 using JsonSerializer = Newtonsoft.Json.JsonSerializer; // padpsdapoodsa
 
@@ -12,23 +12,21 @@ namespace Terminal_App.GitClient; // a change
 
 public partial class GitHubClientWindow : Window
 {
-    private GitHubClient _client;//
+    private GitHubClient _client;
     
     public GitHubClientWindow()
     {
         _client = new GitHubClient();
         InitializeComponent();
-        LoadSettings();//
+        LoadSettings();
         RefreshChangedFilesText();
 
-//
+
         RepoDirectory = "C:\\Users\\finne\\RiderProjects\\Terminal_App";
         User = "Finnerex";
         Email = "finnerex@gmail.com";
     }
 
-    //
-    
     public string RepoDirectory
     {
         get => _client.Directory;
@@ -48,8 +46,7 @@ public partial class GitHubClientWindow : Window
         set => _client.Email = value;
     }
 
-    public string CommitMessage;//
-    //
+    public string CommitMessage;
 
     public void RefreshChangedFilesText() // erm what 
     {

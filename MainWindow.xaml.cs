@@ -38,24 +38,104 @@ namespace Terminal_App
     {
 
        private string _dirText = "C:\\>";
+       public int ActiveTab;
+       public Dictionary<int,PseudoConsole> PseudoConsoles = [];
+       private Microsoft.UI.Dispatching.DispatcherQueue _dispatcherQueue;
+       public Dictionary<int,CancellationTokenSource> CancellationTokenSources = [];
+       public Dictionary<int,SemaphoreSlim> SemaphoreSlims = [];
+       public ConcurrentQueue<byte[]> _command =new();
+       private int idCounter = 0;
+       public void AddConsole()
+       {
+           int id = idCounter;
+           idCounter++;
+           
+           var newTab = new TabViewItem();
+           newTab.Header = $"Terminal {TerminalTabs.TabItems.Count + 1}";
+           var userControl = new UserControl(id,this);
+           newTab.Content = userControl;
+           var pseudoConsole = new PseudoConsole((3000, 3000), ((short)300,(short)300),Microsoft.UI.Dispatching.DispatcherQueue.GetForCurrentThread());
+           CancellationTokenSource cts = new CancellationTokenSource();
+           TerminalTabs.TabItems.Add(newTab);
+           PseudoConsoles.Add(id,pseudoConsole);
+           
+           SemaphoreSlims.Add(id,new SemaphoreSlim(0,1));
+           CancellationTokenSources.Add(id,cts);
+
+           Task.Run(async()=>await pseudoConsole.BufferLoop(cts.Token));
+           Task.Run(async()=>
+           {
+               while(!cts.IsCancellationRequested)
+               {
+                   await Task.Delay(50);
+                   if(ActiveTab != id)
+                   {
+                       continue;
+                   }
+                   _dispatcherQueue.TryEnqueue(() =>
+                   {
+                       // double vertiOffset = ScrollViewer.VerticalOffset;
+                       userControl.OutputText.Text = pseudoConsole.Buffer.PrintString();
+                       // ScrollViewer.ChangeView(null,vertiOffset,null);
+                   });
+               }
+           });
+           Task.Run(async()=>
+           {
+               while(!cts.IsCancellationRequested)
+               {
+                   await SemaphoreSlims[id].WaitAsync();
+                   if(_command.TryDequeue(out var result))
+                   {
+                        
+                       await pseudoConsole.SendInput(result, cts.Token);
+                   }else{
+                        
+                       await pseudoConsole.SendCommand("yo the command is null", cts.Token);
+                   }
+               } 
+                
+           });
+           TerminalTabs.SelectedItem = newTab;
+       }
         public MainWindow()
         {
-            this.InitializeComponent();
+            _dispatcherQueue = Microsoft.UI.Dispatching.DispatcherQueue.GetForCurrentThread();
+            InitializeComponent();
+
+            // _pseudoConsole.Buffer.TextBox = OutputText;
         }
 
         private void TerminalTabs_AddTabButtonClick(TabView sender, object args)
         {
-            var newTab = new TabViewItem();
-
-            newTab.Header = $"Terminal {TerminalTabs.TabItems.Count + 1}";
-            newTab.Content = new UserControl();
-
-            TerminalTabs.TabItems.Add(newTab);
-            TerminalTabs.SelectedItem = newTab;
+            AddConsole();
         }
         private const uint MAPVK_VK_TO_CHAR = 2;
 
         [DllImport("user32.dll")]
         private static extern uint MapVirtualKey(uint uCode, uint uMapType);
+
+        private void TerminalTabs_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if(TerminalTabs.SelectedItem != null)
+            {
+                ActiveTab =((UserControl)((TabViewItem)TerminalTabs.SelectedItem).Content).Id;
+            }
+        }
+
+        private void TerminalTabs_OnTabCloseRequested(TabView sender, TabViewTabCloseRequestedEventArgs args)
+        {
+            UserControl userControl=((UserControl)((TabViewItem)TerminalTabs.SelectedItem).Content);
+            var tabToDelete = userControl.Id;
+            var tabIndex = TerminalTabs.TabItems.IndexOf(TerminalTabs.SelectedItem);
+            TerminalTabs.TabItems.RemoveAt(tabIndex);
+            
+            CancellationTokenSources[tabToDelete].Cancel();
+            PseudoConsoles[tabToDelete].Dispose();
+            SemaphoreSlims[tabToDelete].Dispose();
+            SemaphoreSlims.Remove(tabToDelete);
+            PseudoConsoles.Remove(tabToDelete);
+            
+        }
     }
 }

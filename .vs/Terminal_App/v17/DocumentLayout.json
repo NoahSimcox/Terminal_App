@@ -3,16 +3,24 @@
   "WorkspaceRootPath": "C:\\Users\\nssim\\source\\repos\\Terminal_App\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{8F9B266E-919D-4A24-9156-6DDDC3F5FB00}|Terminal_App.csproj|c:\\users\\nssim\\source\\repos\\terminal_app\\pseudoconsole.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{8F9B266E-919D-4A24-9156-6DDDC3F5FB00}|Terminal_App.csproj|solutionrelative:pseudoconsole.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{8F9B266E-919D-4A24-9156-6DDDC3F5FB00}|Terminal_App.csproj|c:\\users\\nssim\\source\\repos\\terminal_app\\usercontrol.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{8F9B266E-919D-4A24-9156-6DDDC3F5FB00}|Terminal_App.csproj|solutionrelative:usercontrol.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{8F9B266E-919D-4A24-9156-6DDDC3F5FB00}|Terminal_App.csproj|c:\\users\\nssim\\source\\repos\\terminal_app\\mainwindow.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
+      "RelativeMoniker": "D:0:0:{8F9B266E-919D-4A24-9156-6DDDC3F5FB00}|Terminal_App.csproj|solutionrelative:mainwindow.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{8F9B266E-919D-4A24-9156-6DDDC3F5FB00}|Terminal_App.csproj|c:\\users\\nssim\\source\\repos\\terminal_app\\mainwindow.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{8F9B266E-919D-4A24-9156-6DDDC3F5FB00}|Terminal_App.csproj|solutionrelative:mainwindow.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{8F9B266E-919D-4A24-9156-6DDDC3F5FB00}|Terminal_App.csproj|c:\\users\\nssim\\source\\repos\\terminal_app\\mainwindow.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
-      "RelativeMoniker": "D:0:0:{8F9B266E-919D-4A24-9156-6DDDC3F5FB00}|Terminal_App.csproj|solutionrelative:mainwindow.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
+      "AbsoluteMoniker": "D:0:0:{8F9B266E-919D-4A24-9156-6DDDC3F5FB00}|Terminal_App.csproj|c:\\users\\nssim\\source\\repos\\terminal_app\\usercontrol.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
+      "RelativeMoniker": "D:0:0:{8F9B266E-919D-4A24-9156-6DDDC3F5FB00}|Terminal_App.csproj|solutionrelative:usercontrol.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{8F9B266E-919D-4A24-9156-6DDDC3F5FB00}|Terminal_App.csproj|c:\\users\\nssim\\source\\repos\\terminal_app\\pseudoconsole.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{8F9B266E-919D-4A24-9156-6DDDC3F5FB00}|Terminal_App.csproj|solutionrelative:pseudoconsole.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -27,38 +35,64 @@
             {
               "$type": "Document",
               "DocumentIndex": 0,
+              "Title": "UserControl.xaml.cs",
+              "DocumentMoniker": "C:\\Users\\nssim\\source\\repos\\Terminal_App\\UserControl.xaml.cs",
+              "RelativeDocumentMoniker": "UserControl.xaml.cs",
+              "ToolTip": "C:\\Users\\nssim\\source\\repos\\Terminal_App\\UserControl.xaml.cs",
+              "RelativeToolTip": "UserControl.xaml.cs",
+              "ViewState": "AgIAAB0AAAAAAAAAAAAAwCMAAAAlAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-04-13T08:47:35.488Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "UserControl.xaml",
+              "DocumentMoniker": "C:\\Users\\nssim\\source\\repos\\Terminal_App\\UserControl.xaml",
+              "RelativeDocumentMoniker": "UserControl.xaml",
+              "ToolTip": "C:\\Users\\nssim\\source\\repos\\Terminal_App\\UserControl.xaml",
+              "RelativeToolTip": "UserControl.xaml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAIAAAAgAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
+              "WhenOpened": "2025-04-13T09:59:25.346Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
               "Title": "PseudoConsole.cs",
               "DocumentMoniker": "C:\\Users\\nssim\\source\\repos\\Terminal_App\\PseudoConsole.cs",
               "RelativeDocumentMoniker": "PseudoConsole.cs",
               "ToolTip": "C:\\Users\\nssim\\source\\repos\\Terminal_App\\PseudoConsole.cs",
               "RelativeToolTip": "PseudoConsole.cs",
-              "ViewState": "AgIAAJAAAAAAAAAAAAAEwJUAAAAgAAAAAAAAAA==",
+              "ViewState": "AgIAAJwAAAAAAAAAAAAEwKwAAAAuAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-04-13T03:26:35.354Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 2,
               "Title": "MainWindow.xaml.cs",
               "DocumentMoniker": "C:\\Users\\nssim\\source\\repos\\Terminal_App\\MainWindow.xaml.cs",
               "RelativeDocumentMoniker": "MainWindow.xaml.cs",
               "ToolTip": "C:\\Users\\nssim\\source\\repos\\Terminal_App\\MainWindow.xaml.cs",
               "RelativeToolTip": "MainWindow.xaml.cs",
-              "ViewState": "AgIAADgAAAAAAAAAAAAAwEQAAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAAGcAAAAAAAAAAAAxwHQAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-04-13T03:20:49.837Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 1,
               "Title": "MainWindow.xaml",
               "DocumentMoniker": "C:\\Users\\nssim\\source\\repos\\Terminal_App\\MainWindow.xaml",
               "RelativeDocumentMoniker": "MainWindow.xaml",
               "ToolTip": "C:\\Users\\nssim\\source\\repos\\Terminal_App\\MainWindow.xaml",
               "RelativeToolTip": "MainWindow.xaml",
-              "ViewState": "AgIAABEAAAAAAAAAAAAqwCQAAAA7AAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABwAAAA1AAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
               "WhenOpened": "2025-04-13T03:12:21.614Z",
               "EditorCaption": ""

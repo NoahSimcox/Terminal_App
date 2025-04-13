@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Runtime.InteropServices.WindowsRuntime;
 using System.Text;
 using System.Threading;
@@ -20,6 +21,7 @@ using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.System;
 using Windows.UI;
+using Windows.UI.Core;
 using Microsoft.UI;
 using testcmd;
 
@@ -28,97 +30,39 @@ namespace Terminal_App
 
     public sealed partial class UserControl
     {
-        
-        private string _dirText = "C:\\>";
         private StreamReader _streamReader = new StreamReader(Path.Combine(AppContext.BaseDirectory, "cmdCommands.txt"));
         private List<string> _commands;
-        public PseudoConsole _pseudoConsole;
         private int _selectedItemIndex = 0;
-        private CancellationTokenSource _cts = new();
-        private SemaphoreSlim _autoResetEvent = new(0,1);
-        private ConcurrentQueue<byte[]> _command =new();
+        public int Id;
+        public TextBox OutputText => _OutputText;
+        public MainWindow MainWindow;
 
-        private Microsoft.UI.Dispatching.DispatcherQueue _dispatcherQueue;
 
-        public UserControl()
+        public UserControl(int id, MainWindow mainWindow)
         {
+            Id = id;
+            MainWindow = mainWindow;
             InitializeComponent();
-            _dispatcherQueue = Microsoft.UI.Dispatching.DispatcherQueue.GetForCurrentThread();
             string contents = _streamReader.ReadToEnd();
             _commands = contents.Split(",").ToList();
-            OutputText.Loaded += OutputText_Loaded;
+            Directory2.Text = "Command: ";
         }
         
-        public void OutputText_Loaded(object sender, RoutedEventArgs e)
-        {
-            double fontSize = OutputText.FontSize;
-            double height = OutputText.ActualHeight / fontSize;
-            TextBlock textBlock = new TextBlock
-            {
-                Text = "A", // Single character to measure
-                FontFamily = new FontFamily("Consolas, Couriers New"), // Replace with your desired monospaced font
-                FontSize =  fontSize// Set the desired font size
-            };
-            
-            textBlock.Measure(new Size(double.PositiveInfinity, double.PositiveInfinity));
-            double textWidth = textBlock.DesiredSize.Width;
-            double width= OutputText.ActualWidth/textWidth;
-             
-            short trueSize = (short) Math.Max(width, height);
-            _pseudoConsole = new PseudoConsole((3000, 3000), ((short)300,(short)300),Microsoft.UI.Dispatching.DispatcherQueue.GetForCurrentThread());
-            // _pseudoConsole.Buffer.TextBox = OutputText;
-            Task.Run(async()=>await _pseudoConsole.BufferLoop(_cts.Token));
-            Task.Run(async()=>
-            {
-                while(!_cts.IsCancellationRequested)
-                {
-                    await Task.Delay(1000);
-                    // if(!_pseudoConsole.Buffer.Dirty)
-                    // {
-                    //     continue;
-                    // }
-                    _dispatcherQueue.TryEnqueue(() =>
-                    {
-                        double vertiOffset = ScrollViewer.VerticalOffset;
-                        
-                        OutputText.Text = _pseudoConsole.Buffer.PrintString();
-                        ScrollViewer.ChangeView(null,vertiOffset,null);
-                    });
-                }
-            });
-            Task.Run(async()=>
-            {
-                while(!_cts.IsCancellationRequested)
-                {
-                    await _autoResetEvent.WaitAsync();
-                    if(_command.TryDequeue(out var result))
-                    {
-                        
-                        await _pseudoConsole.SendInput(result, _cts.Token);
-                    }else{
-                        
-                        await _pseudoConsole.SendCommand("yo the command is null", _cts.Token);
-                    }
-                } 
-                
-            });
-        }
 
-        private void KeyDownEvent(object sender, KeyRoutedEventArgs e)
+        private new void KeyDownEvent(object sender, KeyRoutedEventArgs e)
         {
 
             if (e.Key == VirtualKey.Enter)
             {
-                    _command.Enqueue( Encoding.ASCII.GetBytes(InputBox.Text+"\r\n"));
+                MainWindow._command.Enqueue( Encoding.ASCII.GetBytes(InputBox.Text+"\r\n"));
                     try
                     {                
-
-                        _autoResetEvent.Release();
+                        MainWindow.SemaphoreSlims[Id].Release();
                     }catch{}
                 InputBox.Text = "";
             }
 
-
+            
             if (e.Key == VirtualKey.Tab && AutocompletePopup.IsOpen)
             {
                 AutocompletePopup.IsOpen = false;
@@ -127,43 +71,43 @@ namespace Terminal_App
                 e.Handled = true;
                 InputBox.SelectionStart = InputBox.Text.Length;
             }
-
-
+            
+            
             if (e.Key == VirtualKey.Up && AutocompletePopup.IsOpen)
             {
                 if (_selectedItemIndex > 0)
                     _selectedItemIndex--;
-
+            
             }
             else if (e.Key == VirtualKey.Down && AutocompletePopup.IsOpen)
             {
                 if (_selectedItemIndex < SuggestionsList.Items.Count - 1)
                     _selectedItemIndex++;
-
+            
             }
             else
                 _selectedItemIndex = 0;
-
-
+            
+            
             SuggestionsList.SelectedIndex = _selectedItemIndex;
             SuggestionsList.SelectedItem = SuggestionsList.Items[_selectedItemIndex];
-
+            
             SuggestionsList.UpdateLayout();
-
+        
         }
-
-        private void KeyUpEvent(object sender, KeyRoutedEventArgs e)
+        
+        private new void KeyUpEvent(object sender, KeyRoutedEventArgs e)
         {
             string text = InputBox.Text;
-
+            
             if (string.IsNullOrEmpty(text) || e.Key == VirtualKey.Tab)
             {
                 AutocompletePopup.IsOpen = false;
                 return;
             }
-
+            
             var matches = _commands.Where(cmd => cmd.StartsWith(text, StringComparison.OrdinalIgnoreCase)).ToList();
-
+            
             if (matches.Count > 0)
             {
                 SuggestionsList.ItemsSource = matches;
@@ -171,7 +115,7 @@ namespace Terminal_App
             }
             else
                 AutocompletePopup.IsOpen = false;
-
+            
         }
 
         private void AutocompletePopup_Opened(object sender, object e)
@@ -179,6 +123,42 @@ namespace Terminal_App
             InputBox.Focus(FocusState.Programmatic);
         }
         
+        private void OutputText_OnKeyDown(object sender, KeyRoutedEventArgs e)
+        {
+            if(e.Key == VirtualKey.Back)
+            {
+                MainWindow._command.Enqueue([0x7f]);
+                try
+                {                
+                    MainWindow.SemaphoreSlims[Id].Release();
+                }catch{}
+                return;
+            }
+            uint result = MapVirtualKey((uint)e.Key, MAPVK_VK_TO_CHAR);
+            if(result!=0)
+            {
+                bool b = Microsoft.UI.Input.InputKeyboardSource.GetKeyStateForCurrentThread(VirtualKey.Shift).HasFlag(CoreVirtualKeyStates.Down);
+                var character = (char)result;
+                if(!b)
+                {
+                    result = Char.ToLower(character);
+                }else{
+                    result = Char.ToUpper(character);
+                }
+                MainWindow._command.Enqueue([(byte)result]);
+                try
+                {                
+                    MainWindow.SemaphoreSlims[Id].Release();
+                }catch{}
+            }
+ 
 
+        }
+
+        private const uint MAPVK_VK_TO_CHAR = 2;
+ 
+
+        [DllImport("user32.dll")]
+        private static extern uint MapVirtualKey(uint uCode, uint uMapType);
     }
 }

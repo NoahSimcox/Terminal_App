@@ -27,11 +27,12 @@
             </Grid.ColumnDefinitions>
         
             <ScrollViewer Grid.Column="1" VerticalScrollBarVisibility="Auto" Name="ScrollViewer">
-            <TextBox x:Name="OutputText"
+            <TextBox x:Name="_OutputText"
                      Foreground="White"
                      FontFamily="Consolas, Courier New"
                      FontSize="24"
                      Grid.Column="1"
+                     KeyDown="OutputText_OnKeyDown"
                      TextWrapping="Wrap"
                      Margin="10, 0,0, 0"
                      Padding="0, 0, 0, 8"
@@ -81,9 +82,9 @@
                              Background="Black"
                              Foreground="White"
                              FontSize="20"
-                             ItemContainerStyle="{StaticResource ListBoxItemStyle}"
                              SelectionMode="Single"
                              SelectedIndex="0"
+                             ItemContainerStyle="{StaticResource ListBoxItemStyle}"
                              Template="{StaticResource Control}"/>
                 </Border>
             </Popup>
