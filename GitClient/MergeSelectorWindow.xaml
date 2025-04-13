@@ -39,7 +39,7 @@
                     <RowDefinition Height="*"/>
                     <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
-                
+                <!---->
                 <StackPanel Orientation="Vertical" Grid.Row="0">
                     <Button Content="Merge" Click="{x:Bind Merge}"/>
                     <Button Content="Accept Yours" Click="{x:Bind AcceptYours}"/>

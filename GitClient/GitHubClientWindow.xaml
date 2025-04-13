@@ -55,7 +55,7 @@
                     <Button Grid.Column="0" Content="Commit" Click="{x:Bind Commit}" HorizontalAlignment="Stretch"/>
                     <Button Grid.Column="1" Name="PushButton" Content="Push" Click="{x:Bind Push}" HorizontalAlignment="Stretch"/>
                     <Button Grid.Column="2" Name="PullButton" Content="Pull" Click="{x:Bind Pull}" HorizontalAlignment="Stretch"/>
-                
+                <!---->
                 </Grid>
             </StackPanel>
         </StackPanel>

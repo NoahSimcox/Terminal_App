@@ -87,7 +87,7 @@ public partial class MergeSelectorWindow : Window
         // _repo.Reset(ResetMode.Hard, _repo.Head.Tip);
         // _repo.Index.Write();
         Close();
-    }
+    }//
     
     public void ConfirmMerge()
     {

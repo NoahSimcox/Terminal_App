@@ -165,7 +165,7 @@ public partial class MergeDiffWindow : Window
         Grid.SetRow(block, line);
         Grid.SetColumn(block, 0);
         grid.Children.Add(block);
-    }
+    }//
     
 }
 
