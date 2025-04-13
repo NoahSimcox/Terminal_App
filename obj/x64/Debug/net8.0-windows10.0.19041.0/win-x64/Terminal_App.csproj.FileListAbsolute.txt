@@ -253,6 +253,13 @@ C:\Users\nssim\source\repos\Terminal_App\obj\x64\Debug\net8.0-windows10.0.19041.
 C:\Users\nssim\source\repos\Terminal_App\obj\x64\Debug\net8.0-windows10.0.19041.0\win-x64\qualifiers.txt.intermediate
 C:\Users\nssim\source\repos\Terminal_App\obj\x64\Debug\net8.0-windows10.0.19041.0\win-x64\MultipleQualifiersPerDimensionFound.txt
 C:\Users\nssim\source\repos\Terminal_App\obj\x64\Debug\net8.0-windows10.0.19041.0\win-x64\ProjectArchitectures.txt
-C:\Users\nssim\source\repos\Terminal_App\bin\x64\Debug\net8.0-windows10.0.19041.0\win-x64\Octokit.dll
 C:\Users\nssim\source\repos\Terminal_App\bin\x64\Debug\net8.0-windows10.0.19041.0\win-x64\cmdCommands.txt
 C:\Users\nssim\source\repos\Terminal_App\obj\x64\Debug\net8.0-windows10.0.19041.0\win-x64\Terminal_App.sourcelink.json
+C:\Users\nssim\source\repos\Terminal_App\bin\x64\Debug\net8.0-windows10.0.19041.0\win-x64\GitClient\GitHubClientWindow.xbf
+C:\Users\nssim\source\repos\Terminal_App\bin\x64\Debug\net8.0-windows10.0.19041.0\win-x64\LibGit2Sharp.dll
+C:\Users\nssim\source\repos\Terminal_App\bin\x64\Debug\net8.0-windows10.0.19041.0\win-x64\Newtonsoft.Json.dll
+C:\Users\nssim\source\repos\Terminal_App\bin\x64\Debug\net8.0-windows10.0.19041.0\win-x64\git2-3f4182d.dll
+C:\Users\nssim\source\repos\Terminal_App\obj\x64\Debug\net8.0-windows10.0.19041.0\win-x64\GitClient\GitHubClientWindow.g.i.cs
+C:\Users\nssim\source\repos\Terminal_App\obj\x64\Debug\net8.0-windows10.0.19041.0\win-x64\GitClient\GitHubClientWindow.g.cs
+C:\Users\nssim\source\repos\Terminal_App\obj\x64\Debug\net8.0-windows10.0.19041.0\win-x64\GitClient\GitHubClientWindow.xaml
+C:\Users\nssim\source\repos\Terminal_App\obj\x64\Debug\net8.0-windows10.0.19041.0\win-x64\GitClient\GitHubClientWindow.xbf

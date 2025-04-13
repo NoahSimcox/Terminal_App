@@ -64,6 +64,8 @@ namespace Terminal_App
             {
                 InputBox.Text = SuggestionsList.Items[selectedItemIndex].ToString();
                 InputBox.Focus(FocusState.Programmatic);
+                e.Handled = true;
+                InputBox.SelectionStart = InputBox.Text.Length;
             }
             
             if (e.Key == VirtualKey.Up && AutocompletePopup.IsOpen)
