@@ -38,6 +38,7 @@ namespace Terminal_App
     {
 
        private string _dirText = "C:\\>";
+       public int ActiveTab;
         public MainWindow()
         {
             _dispatcherQueue = Microsoft.UI.Dispatching.DispatcherQueue.GetForCurrentThread();
@@ -58,7 +59,7 @@ namespace Terminal_App
             var newTab = new TabViewItem();
 
             newTab.Header = $"Terminal {TerminalTabs.TabItems.Count + 1}";
-            newTab.Content = new UserControl();
+            newTab.Content = new UserControl(TerminalTabs.TabItems.Count,this);
 
             TerminalTabs.TabItems.Add(newTab);
             TerminalTabs.SelectedItem = newTab;
@@ -67,6 +68,11 @@ namespace Terminal_App
 
         [DllImport("user32.dll")]
         private static extern uint MapVirtualKey(uint uCode, uint uMapType);
+
+        private void TerminalTabs_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            ActiveTab = TerminalTabs.TabItems.IndexOf(TerminalTabs.SelectedItem);
+        }
     }
 
 

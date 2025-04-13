@@ -2,6 +2,7 @@ using System.IO;
 using LibGit2Sharp;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
+using Microsoft.UI.Xaml.Controls.Primitives;
 
 namespace Terminal_App.GitClient;
 
@@ -13,11 +14,12 @@ public partial class MergeSelectorWindow : Window
     private string _repoPath;
 
     private Signature _signature;
+    private ToggleButton? _previousButton = null;
     
     
     public MergeSelectorWindow(ConflictCollection conflicts, Repository repo, string repoPath, Signature signature)
     {
-        InitializeComponent(); // noah kys // make it bad
+        InitializeComponent(); // noah kys // an addition
         _conflicts = conflicts;
         _repo = repo;
         _repoPath = repoPath;
@@ -25,9 +27,10 @@ public partial class MergeSelectorWindow : Window
         
         foreach (Conflict c in conflicts) // a line that is different sdhfgksjdfhkjashdkjashdkjh
         {
-            Button b = new Button
+            ToggleButton b = new ToggleButton
             {
                 Content = c.Ours.Path,
+                HorizontalAlignment = HorizontalAlignment.Stretch
             };
             b.Click += SelectConflict;
             MergeButtons.Children.Add(b);
@@ -37,8 +40,14 @@ public partial class MergeSelectorWindow : Window
 
     public void SelectConflict(object sender, RoutedEventArgs e)
     {
-        if (sender is Button { Content: string content })
+        if (sender is ToggleButton { Content: string content } button)
+        {
             _selectedConflictPath = content;
+            if (_previousButton != null)
+                _previousButton.IsChecked = false;
+
+            _previousButton = button;
+        }
     }
 
     public void AcceptTheirs()
@@ -51,6 +60,8 @@ public partial class MergeSelectorWindow : Window
         File.WriteAllText(path, mergedContent);
         
         Commands.Stage(_repo, path);
+        
+        
     }
 
     public void AcceptYours()
@@ -67,12 +78,26 @@ public partial class MergeSelectorWindow : Window
 
     public void Merge()
     {
-        
+        Window mergeWindow = new MergeDiffWindow(_conflicts[_selectedConflictPath], _repo);
+        mergeWindow.Activate();
+    }
+
+    public void Abort()
+    {
+        _repo.Reset(ResetMode.Hard, _repo.Head.Tip);
+        _repo.Index.Write();
+    }
+    
+    public void ConfirmMerge()
+    {
+        // TODO: add check if resolved
+        _repo.Commit("merge", _signature, _signature);
     }
 
     private void OnClosed(object sender, WindowEventArgs args)
     {
-        _repo.Commit("merge", _signature, _signature);
+        Abort();
     }
+    
 }
 

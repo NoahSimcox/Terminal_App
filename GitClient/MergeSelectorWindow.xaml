@@ -28,7 +28,7 @@
         <!-- things that can be merged -->
         <Border Grid.Column="0" BorderBrush="Magenta" BorderThickness="1" Margin="30, 30" Padding="10">
             <ScrollViewer VerticalScrollBarVisibility="Auto">
-                <StackPanel x:Name="MergeButtons" Orientation="Vertical"/>
+                <StackPanel x:Name="MergeButtons" Orientation="Vertical" HorizontalAlignment="Stretch"/>
             </ScrollViewer>
         </Border>
         
@@ -46,7 +46,10 @@
                     <Button Content="Accept Theirs" Click="{x:Bind AcceptTheirs}"/>
                 </StackPanel>
                 
-                <Button Grid.Row="1" Content="Abort" />
+                <StackPanel Grid.Row="1" Orientation="Vertical">
+                    <Button Content="Confirm" Click="{x:Bind ConfirmMerge}"/>
+                    <Button Content="Abort" Click="{x:Bind Abort}" />
+                </StackPanel>
                 
             </Grid>
         </Border>
