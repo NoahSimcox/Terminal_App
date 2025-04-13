@@ -24,7 +24,7 @@ public partial class MergeDiffWindow : Window
         string[] yourLines = yourBlob.GetContentText().Split(["\n", "\n\r", "\r"], StringSplitOptions.None);
         string[] theirLines = theirBlob.GetContentText().Split(["\n", "\n\r", "\r"], StringSplitOptions.None);
 
-        int lines = Math.Max(Math.Max(theirLines.Length, yourLines.Length), baseLines.Length);
+        int lines = Math.Min(Math.Min(theirLines.Length, yourLines.Length), baseLines.Length);
         for (int i = 0; i < lines; i++)
         {
             YourGrid.RowDefinitions.Add(new RowDefinition { Height = GridLength.Auto});
