@@ -34,7 +34,7 @@ namespace Terminal_App
        private List<string> _commands;
        private int _selectedItemIndex = 0;
        private PseudoConsole _pseudoConsole;
-       private CancellationTokenSource _cts;
+       private CancellationTokenSource _cts = new();
        private AutoResetEvent signal = new AutoResetEvent(false);
         public void UpdateScreenThread()
         {
