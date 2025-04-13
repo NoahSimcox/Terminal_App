@@ -5,8 +5,8 @@ using System.Linq;
 using System.Text.Json;
 using System.Threading.Tasks;
 using LibGit2Sharp;
-using Microsoft.UI.Xaml;
-using JsonSerializer = Newtonsoft.Json.JsonSerializer; // bingus
+using Microsoft.UI.Xaml; // addition
+using JsonSerializer = Newtonsoft.Json.JsonSerializer; 
 
 namespace Terminal_App.GitClient; // a change
 

@@ -24,6 +24,8 @@ public partial class MergeDiffWindow : Window
         string[] yourLines = yourBlob.GetContentText().Split(["\n", "\n\r", "\r"], StringSplitOptions.None);
         string[] theirLines = theirBlob.GetContentText().Split(["\n", "\n\r", "\r"], StringSplitOptions.None);
 
+        // add all of base and then add changed lines later to the you and they grids
+        
         int lines = Math.Min(Math.Min(theirLines.Length, yourLines.Length), baseLines.Length);
         for (int i = 0; i < lines; i++)
         {
