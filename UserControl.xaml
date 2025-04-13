@@ -96,8 +96,8 @@
                              FontSize="20"
                              SelectionMode="Single"
                              SelectedIndex="0"
-                             ItemContainerStyle="{StaticResource ListBoxItemStyle}"
-                             Template="{StaticResource Control}"/>
+                             ItemContainerStyle="{StaticResource AutocompleteItemStyle}">
+                    </ListBox>
                 </Border>
             </Popup>
         </Grid>
