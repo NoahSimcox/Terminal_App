@@ -20,7 +20,7 @@ public partial class MergeSelectorWindow : Window
             {
                 Content = c.Ours.Path,
             };
-            // b.Click +=
+            // b.Click += what the hell
 
         }
     }
