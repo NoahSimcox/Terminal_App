@@ -65,12 +65,11 @@ public partial class MergeDiffWindow : Window
 
         try
         {
-
             for (int i = 0; i < lines; i++)
             {
                 bool shouldContinue = false;
                 if (yourAdditionLineNumbers.Contains(yourCurrentLine) &&
-                    yourRemovalLineNumbers.Contains(baseCurrentLine))
+                    yourRemovalLineNumbers.Contains(yourCurrentLine))
                 {
                     AddText(YourGrid, yourLines[yourCurrentLine++], i);
                     AddText(BaseGrid, baseLines[baseCurrentLine++], i);
@@ -78,7 +77,7 @@ public partial class MergeDiffWindow : Window
                 }
 
                 if (theirAdditionLineNumbers.Contains(theirCurrentLine) &&
-                    theirRemovalLineNumbers.Contains(baseCurrentLine))
+                    theirRemovalLineNumbers.Contains(theirCurrentLine))
                 {
                     AddText(TheirGrid, theirLines[theirCurrentLine++], i);
                     if (!shouldContinue)
@@ -105,14 +104,14 @@ public partial class MergeDiffWindow : Window
 
                 if (shouldContinue) continue;
 
-                if (yourRemovalLineNumbers.Contains(baseCurrentLine))
+                if (yourRemovalLineNumbers.Contains(yourCurrentLine))
                 {
                     AddText(YourGrid, " removed line", i);
                     AddText(BaseGrid, baseLines[baseCurrentLine++], i);
                     shouldContinue = true;
                 }
 
-                if (theirAdditionLineNumbers.Contains(baseCurrentLine))
+                if (theirAdditionLineNumbers.Contains(theirCurrentLine))
                 {
                     AddText(TheirGrid, " removed line", i);
                     if (!shouldContinue)
