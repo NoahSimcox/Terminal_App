@@ -43,7 +43,7 @@ public partial class GitHubClientWindow : Window
 
     public string CommitMessage;
 
-    public void RefreshChangedFilesText()
+    public void RefreshChangedFilesText() // balerlkk
     {
         try { ChangedFilesText.Text = string.Join('\n', _client.GetChangedFiles()); }
         catch (Exception e) { ChangedFilesText.Text = e.Message; }
