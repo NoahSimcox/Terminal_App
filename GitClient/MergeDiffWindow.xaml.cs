@@ -26,8 +26,8 @@ public partial class MergeDiffWindow : Window
         string[] theirLines = theirBlob.GetContentText().Split(["\n", "\n\r", "\r"], StringSplitOptions.None);
 
         // add all of base and then add changed lines later to the you and they grids
-        ContentChanges youBaseDiff = repo.Diff.Compare(yourBlob, baseBlob);
-        ContentChanges themBaseDiff = repo.Diff.Compare(theirBlob, baseBlob);
+        ContentChanges youBaseDiff = repo.Diff.Compare(baseBlob, yourBlob);
+        ContentChanges themBaseDiff = repo.Diff.Compare(baseBlob, theirBlob);
 
         int[] yourAdditionLineNumbers = new int[youBaseDiff.AddedLines.Count];
         for (int i = 0; i < youBaseDiff.AddedLines.Count; i++)
@@ -82,7 +82,9 @@ public partial class MergeDiffWindow : Window
         Button addButton = new Button
         {
             Content = "+",
-            Tag = line
+            Tag = line,
+            Width = 10,
+            Height = 10
         };
         // addButton.Click +=
             
