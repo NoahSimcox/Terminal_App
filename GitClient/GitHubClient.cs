@@ -17,9 +17,10 @@ public class GitHubClient
     private string? _oauthToken;
 
     private string _localRepoDirectory = "";
-    private Signature Signature => new (new Identity(_username, _email), DateTime.Now);
-    
+    public Signature Signature => new (new Identity(_username, _email), DateTime.Now);
 
+    public Repository? repo;
+    
     public string Username
     {
         get => _username;
@@ -29,7 +30,11 @@ public class GitHubClient
     public string Directory
     {
         get => _localRepoDirectory;
-        set => _localRepoDirectory = value;
+        set
+        {
+            _localRepoDirectory = value;
+            repo = new Repository(value);
+        }
     }
 
     public string Email
@@ -40,7 +45,7 @@ public class GitHubClient
 
     public void Commit(string message, string[] changedFilePaths)
     {
-        using Repository repo = new Repository(_localRepoDirectory);
+        // using Repository repo = new Repository(_localRepoDirectory);
 
         foreach (string path in changedFilePaths)
             Commands.Stage(repo, path);
@@ -72,11 +77,11 @@ public class GitHubClient
 
     }
     
-    public async Task Push()
+    public async Task<ConflictCollection?> Push()
     {
         string accessToken = await GetOauthToken();
 
-        using var repo = new Repository(_localRepoDirectory);
+        // using var repo = new Repository(_localRepoDirectory);
         var options = new PushOptions
         {
             CredentialsProvider = (_, _, _) => new UsernamePasswordCredentials
@@ -89,11 +94,12 @@ public class GitHubClient
         try {
             // Push the current branch
             repo.Network.Push(repo.Head, options);
+            return null;
         }
         catch (NonFastForwardException e)
         {
             // prompt the user to pull/merge or cancel 
-            await Pull();
+            return await Pull();
         }
     }
 
@@ -133,19 +139,25 @@ public class GitHubClient
 
     public string[] GetChangedFiles()
     {
-        using var repo = new Repository(_localRepoDirectory);  
+        if (repo == null || string.IsNullOrEmpty(_localRepoDirectory)) throw new Exception("No Repository Specified");
+        
+        // using var repo = new Repository(_localRepoDirectory);
         var status = repo.RetrieveStatus();
-        // status.Missing
 
-        return status.Modified.Concat(status.Added).Select(item => item.FilePath).ToArray();
+        // TODO: status.Missing
+        string[] addedAndModified = status.Modified.Concat(status.Added).Select(item => item.FilePath).ToArray();
+        if (addedAndModified.Length == 0) throw new Exception("No Local Changes");
+
+        return addedAndModified;
+        
     }
     
     
-    public async Task Pull()
+    public async Task<ConflictCollection?> Pull()
     {
         string accessToken = await GetOauthToken();
         
-        using Repository repo = new Repository(_localRepoDirectory);
+        // using Repository repo = new Repository(_localRepoDirectory);
         // Pull options with credentials if needed
         PullOptions pullOptions = new PullOptions
         {
@@ -171,18 +183,17 @@ public class GitHubClient
         // Perform the pull
         MergeResult result = Commands.Pull(repo, Signature, pullOptions);
         if (result.Status == MergeStatus.Conflicts)
-        {
-            ConflictCollection conflicts = repo.Index.Conflicts;
+            return repo.Index.Conflicts;
             
-            foreach (Conflict c in conflicts)
-                HandleMerge(repo, c);
+            // foreach (Conflict c in conflicts)
+            //     HandleMerge(c);
+            //
+            // repo.Commit("merge", Signature, Signature);
+        return null;
 
-            repo.Commit("merge", Signature, Signature);
-
-        }
     }
 
-    private void HandleMerge(Repository repo, Conflict conflict)
+    private void HandleMerge(Conflict conflict)
     {
         Blob yours = repo.Lookup<Blob>(conflict.Ours.Id);
         Blob original = repo.Lookup<Blob>(conflict.Ancestor.Id);
