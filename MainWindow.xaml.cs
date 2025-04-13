@@ -31,11 +31,6 @@ namespace Terminal_App
     /// </summary>
     public sealed partial class MainWindow : Window
     {
-
-       private string _dirText = "C:\\>";
-       private StreamReader _streamReader = new StreamReader(Path.Combine(AppContext.BaseDirectory, "cmdCommands.txt"));
-       private List<string> _commands;
-       private int _selectedItemIndex = 0;
        
        private PseudoConsole _pseudoConsole;
        private CancellationTokenSource _cts = new();
