@@ -77,7 +77,7 @@ public class GitHubClient
 
     }
     
-    public async Task Push()
+    public async Task<ConflictCollection?> Push()
     {
         string accessToken = await GetOauthToken();
 
@@ -94,11 +94,12 @@ public class GitHubClient
         try {
             // Push the current branch
             repo.Network.Push(repo.Head, options);
+            return null;
         }
         catch (NonFastForwardException e)
         {
             // prompt the user to pull/merge or cancel 
-            await Pull();
+            return await Pull();
         }
     }
 
@@ -152,7 +153,7 @@ public class GitHubClient
     }
     
     
-    public async Task Pull()
+    public async Task<ConflictCollection?> Pull()
     {
         string accessToken = await GetOauthToken();
         
@@ -182,15 +183,14 @@ public class GitHubClient
         // Perform the pull
         MergeResult result = Commands.Pull(repo, Signature, pullOptions);
         if (result.Status == MergeStatus.Conflicts)
-        {
-            ConflictCollection conflicts = repo.Index.Conflicts;
+            return repo.Index.Conflicts;
             
-            foreach (Conflict c in conflicts)
-                HandleMerge(c);
+            // foreach (Conflict c in conflicts)
+            //     HandleMerge(c);
+            //
+            // repo.Commit("merge", Signature, Signature);
+        return null;
 
-            repo.Commit("merge", Signature, Signature);
-
-        }
     }
 
     private void HandleMerge(Conflict conflict)

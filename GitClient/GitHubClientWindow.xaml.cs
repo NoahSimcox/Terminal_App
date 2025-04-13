@@ -54,8 +54,22 @@ public partial class GitHubClientWindow : Window
         _client.Commit(CommitMessage, _client.GetChangedFiles());
         RefreshChangedFilesText();
     }
+
     public async Task Push() => await _client.Push();
-    public async Task Pull() => await _client.Pull();
+
+    public async Task Pull()
+    {
+        ConflictCollection? conflicts = await _client.Pull();
+        
+        if (conflicts == null) return;
+
+        // open merge window
+        foreach (Conflict c in conflicts)
+        {
+            
+        }
+    }
+    
 
 
     // private readonly string _settingsFilePath = Path.Combine(AppContext.BaseDirectory, "githubClientSettings.txt");
