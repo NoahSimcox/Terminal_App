@@ -28,7 +28,7 @@
         <!-- things that can be merged -->
         <Border Grid.Column="0" BorderBrush="Magenta" BorderThickness="1" Margin="30, 30" Padding="10">
             <ScrollViewer VerticalScrollBarVisibility="Auto">
-                <StackPanel x:Name="MergeButtons" Orientation="Vertical"/>
+                <StackPanel x:Name="MergeButtons" Orientation="Vertical" HorizontalAlignment="Stretch"/>
             </ScrollViewer>
         </Border>
         

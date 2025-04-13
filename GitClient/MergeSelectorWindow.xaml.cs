@@ -17,7 +17,7 @@ public partial class MergeSelectorWindow : Window
     
     public MergeSelectorWindow(ConflictCollection conflicts, Repository repo, string repoPath, Signature signature)
     {
-        InitializeComponent(); // noah kys
+        InitializeComponent(); // noah kys // an addition
         _conflicts = conflicts;
         _repo = repo;
         _repoPath = repoPath;
@@ -28,6 +28,7 @@ public partial class MergeSelectorWindow : Window
             Button b = new Button
             {
                 Content = c.Ours.Path,
+                HorizontalAlignment = HorizontalAlignment.Stretch
             };
             b.Click += SelectConflict;
             MergeButtons.Children.Add(b);
@@ -51,6 +52,8 @@ public partial class MergeSelectorWindow : Window
         File.WriteAllText(path, mergedContent);
         
         Commands.Stage(_repo, path);
+        
+        
     }
 
     public void AcceptYours()
@@ -67,7 +70,8 @@ public partial class MergeSelectorWindow : Window
 
     public void Merge()
     {
-        
+        Window mergeWindow = new MergeDiffWindow(_conflicts[_selectedConflictPath], _repo);
+        mergeWindow.Activate();
     }
 
     private void OnClosed(object sender, WindowEventArgs args)
