@@ -39,30 +39,35 @@ namespace Terminal_App
 
        private string _dirText = "C:\\>";
        public int ActiveTab;
-       public List<PseudoConsole> PseudoConsoles = [];
+       public Dictionary<int,PseudoConsole> PseudoConsoles = [];
        private Microsoft.UI.Dispatching.DispatcherQueue _dispatcherQueue;
-       public List<CancellationTokenSource> CancellationTokenSources = [];
-       public List<SemaphoreSlim> SemaphoreSlims = [];
+       public Dictionary<int,CancellationTokenSource> CancellationTokenSources = [];
+       public Dictionary<int,SemaphoreSlim> SemaphoreSlims = [];
        public ConcurrentQueue<byte[]> _command =new();
+       private int idCounter = 0;
        public void AddConsole()
        {
+           int id = idCounter;
+           idCounter++;
+           
            var newTab = new TabViewItem();
            newTab.Header = $"Terminal {TerminalTabs.TabItems.Count + 1}";
-           var userControl = new UserControl(TerminalTabs.TabItems.Count,this);
+           var userControl = new UserControl(id,this);
            newTab.Content = userControl;
            var pseudoConsole = new PseudoConsole((3000, 3000), ((short)300,(short)300),Microsoft.UI.Dispatching.DispatcherQueue.GetForCurrentThread());
            CancellationTokenSource cts = new CancellationTokenSource();
-           SemaphoreSlims.Add(new SemaphoreSlim(0,1));
-           CancellationTokenSources.Add(cts);
            TerminalTabs.TabItems.Add(newTab);
+           PseudoConsoles.Add(id,pseudoConsole);
+           
+           SemaphoreSlims.Add(id,new SemaphoreSlim(0,1));
+           CancellationTokenSources.Add(id,cts);
 
-           int id = TerminalTabs.TabItems.Count - 1;
            Task.Run(async()=>await pseudoConsole.BufferLoop(cts.Token));
            Task.Run(async()=>
            {
                while(!cts.IsCancellationRequested)
                {
-                   await Task.Delay(1000);
+                   await Task.Delay(50);
                    if(ActiveTab != id)
                    {
                        continue;
@@ -112,7 +117,25 @@ namespace Terminal_App
 
         private void TerminalTabs_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            ActiveTab = TerminalTabs.TabItems.IndexOf(TerminalTabs.SelectedItem);
+            if(TerminalTabs.SelectedItem != null)
+            {
+                ActiveTab =((UserControl)((TabViewItem)TerminalTabs.SelectedItem).Content).Id;
+            }
+        }
+
+        private void TerminalTabs_OnTabCloseRequested(TabView sender, TabViewTabCloseRequestedEventArgs args)
+        {
+            UserControl userControl=((UserControl)((TabViewItem)TerminalTabs.SelectedItem).Content);
+            var tabToDelete = userControl.Id;
+            var tabIndex = TerminalTabs.TabItems.IndexOf(TerminalTabs.SelectedItem);
+            TerminalTabs.TabItems.RemoveAt(tabIndex);
+            
+            CancellationTokenSources[tabToDelete].Cancel();
+            PseudoConsoles[tabToDelete].Dispose();
+            SemaphoreSlims[tabToDelete].Dispose();
+            SemaphoreSlims.Remove(tabToDelete);
+            PseudoConsoles.Remove(tabToDelete);
+            
         }
     }
 }

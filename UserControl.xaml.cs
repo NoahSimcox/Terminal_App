@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Runtime.InteropServices.WindowsRuntime;
 using System.Text;
 using System.Threading;
@@ -20,6 +21,7 @@ using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.System;
 using Windows.UI;
+using Windows.UI.Core;
 using Microsoft.UI;
 using testcmd;
 
@@ -54,7 +56,6 @@ namespace Terminal_App
                 MainWindow._command.Enqueue( Encoding.ASCII.GetBytes(InputBox.Text+"\r\n"));
                     try
                     {                
-
                         MainWindow.SemaphoreSlims[Id].Release();
                     }catch{}
                 InputBox.Text = "";
@@ -121,6 +122,42 @@ namespace Terminal_App
             InputBox.Focus(FocusState.Programmatic);
         }
         
+        private void OutputText_OnKeyDown(object sender, KeyRoutedEventArgs e)
+        {
+            if(e.Key == VirtualKey.Back)
+            {
+                MainWindow._command.Enqueue([0x7f]);
+                try
+                {                
+                    MainWindow.SemaphoreSlims[Id].Release();
+                }catch{}
+                return;
+            }
+            uint result = MapVirtualKey((uint)e.Key, MAPVK_VK_TO_CHAR);
+            if(result!=0)
+            {
+                bool b = Microsoft.UI.Input.InputKeyboardSource.GetKeyStateForCurrentThread(VirtualKey.Shift).HasFlag(CoreVirtualKeyStates.Down);
+                var character = (char)result;
+                if(!b)
+                {
+                    result = Char.ToLower(character);
+                }else{
+                    result = Char.ToUpper(character);
+                }
+                MainWindow._command.Enqueue([(byte)result]);
+                try
+                {                
+                    MainWindow.SemaphoreSlims[Id].Release();
+                }catch{}
+            }
+ 
 
+        }
+
+        private const uint MAPVK_VK_TO_CHAR = 2;
+ 
+
+        [DllImport("user32.dll")]
+        private static extern uint MapVirtualKey(uint uCode, uint uMapType);
     }
 }
