@@ -6,13 +6,13 @@ using System.Text.Json;
 using System.Threading.Tasks;
 using LibGit2Sharp;
 using Microsoft.UI.Xaml; 
-using JsonSerializer = Newtonsoft.Json.JsonSerializer; 
+using JsonSerializer = Newtonsoft.Json.JsonSerializer; // what th skjehk f
 
 namespace Terminal_App.GitClient; // a change
 
 public partial class GitHubClientWindow : Window
 {
-    private GitHubClient _client;
+    private GitHubClient _client; //
     
     public GitHubClientWindow()
     {
@@ -22,7 +22,7 @@ public partial class GitHubClientWindow : Window
         RefreshChangedFilesText();
 
 
-        RepoDirectory = "C:\\Users\\finne\\RiderProjects\\Terminal_App";
+        RepoDirectory = "C:\\Users\\finne\\RiderProjects\\Terminal_App";//
         User = "Finnerex";
         Email = "finnerex@gmail.com";
     }
@@ -35,7 +35,7 @@ public partial class GitHubClientWindow : Window
     }
 
     public string User
-    {
+    {//
         get => _client.Username;
         set => _client.Username = value;
     }
@@ -48,16 +48,18 @@ public partial class GitHubClientWindow : Window
 
     public string CommitMessage;
 
-    public void RefreshChangedFilesText() // erm what 
+    public void RefreshChangedFilesText() // erm what //
     {
         try { ChangedFilesText.Text = string.Join('\n', _client.GetChangedFiles()); }
         catch (Exception e) { ChangedFilesText.Text = e.Message; }
     }
         
+    //
     public void Commit()
     {
         _client.Commit(CommitMessage, _client.GetChangedFiles());
         RefreshChangedFilesText();
+        // TODO: add ahead/ behind on push and pull buttons
     }
 
     public async Task Push() {
@@ -69,6 +71,9 @@ public partial class GitHubClientWindow : Window
         Window mergeWindow = new MergeSelectorWindow(conflicts, _client.repo, RepoDirectory, _client.Signature);
         mergeWindow.Activate();
     }
+    /// <summary>
+    /// 
+    /// </summary>
 
     public async Task Pull()
     {
