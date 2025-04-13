@@ -55,7 +55,15 @@ public partial class GitHubClientWindow : Window
         RefreshChangedFilesText();
     }
 
-    public async Task Push() => await _client.Push();
+    public async Task Push() {
+        ConflictCollection? conflicts = await _client.Push();
+        
+        if (conflicts == null) return;
+
+        // open merge window
+        Window mergeWindow = new MergeSelectorWindow(conflicts, _client.repo, RepoDirectory);
+        mergeWindow.Activate();
+    }
 
     public async Task Pull()
     {
@@ -64,7 +72,7 @@ public partial class GitHubClientWindow : Window
         if (conflicts == null) return;
 
         // open merge window
-        Window mergeWindow = new MergeSelectorWindow(conflicts);
+        Window mergeWindow = new MergeSelectorWindow(conflicts, _client.repo, RepoDirectory);
         mergeWindow.Activate();
     }
     
