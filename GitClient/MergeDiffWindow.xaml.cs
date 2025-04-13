@@ -74,36 +74,42 @@ public partial class MergeDiffWindow : Window
                 if (yourAdditionLineNumbers.Contains(yourCurrentLine) &&
                     yourRemovalLineNumbers.Contains(yourCurrentLine))
                 {
+                    AddButton(YourGrid, yourLines[yourCurrentLine], i); // technically should have 2 options
                     yt = yourLines[yourCurrentLine++];
                     bt = baseLines[baseCurrentLine++];
                 }
                 else if (yourAdditionLineNumbers.Contains(yourCurrentLine))
                 {
+                    AddButton(YourGrid, yourLines[yourCurrentLine], i);
                     yt = yourLines[yourCurrentLine++];
-                    bt = " added line goes here vs yours";
+                    bt = " >>>> ";
                 }
                 else if (yourRemovalLineNumbers.Contains(baseCurrentLine))
                 {
-                    yt = " removed lin yorese";
+                    AddButton(YourGrid, "", i);
+                    yt = " >--- ";
                     bt = baseLines[baseCurrentLine++];
                 }
 
                 if (theirAdditionLineNumbers.Contains(theirCurrentLine) &&
                     theirRemovalLineNumbers.Contains(theirCurrentLine))
                 { 
+                    AddButton(TheirGrid, theirLines[theirCurrentLine], i);
                     tt = theirLines[theirCurrentLine++];
                     if (bt == null)
                         bt = baseLines[baseCurrentLine++];
                 }
                 else if (theirAdditionLineNumbers.Contains(theirCurrentLine))
                 {
+                    AddButton(TheirGrid, theirLines[theirCurrentLine], i);
                     tt = theirLines[theirCurrentLine++];
                     if (bt == null)
-                        bt = " added line goes here vs theirs";
+                        bt = " <<<< ";
                 }
                 else if (theirAdditionLineNumbers.Contains(baseCurrentLine))
                 {
-                    tt = " removed line thrits";
+                    AddButton(TheirGrid, "", i);
+                    tt = " ---< ";
                     if (bt == null)
                         bt = baseLines[baseCurrentLine++];
                 }
@@ -133,24 +139,29 @@ public partial class MergeDiffWindow : Window
     
     private void AddButton(Grid grid, Line line)
     {
+        AddButton(grid, line.Content, line.LineNumber);
+    }
+
+    private void AddButton(Grid grid, string content, int lineNumber)
+    {
         Button addButton = new Button
         {
             Content = "+",
-            Tag = line,
+            Tag = (content, lineNumber),
             Width = 10,
             Height = 10
         };
         // addButton.Click +=
             
         Grid.SetColumn(addButton, 1);
-        Grid.SetRow(addButton, line.LineNumber);
+        Grid.SetRow(addButton, lineNumber);
         grid.Children.Add(addButton);
     }
 
     private void AddText(Grid grid, string text, int line)
     {
         grid.RowDefinitions.Add(new RowDefinition { Height = GridLength.Auto});
-        TextBlock block = new TextBlock { Text = text };
+        TextBlock block = new TextBlock { Text = text};
         Grid.SetRow(block, line);
         Grid.SetColumn(block, 0);
         grid.Children.Add(block);
