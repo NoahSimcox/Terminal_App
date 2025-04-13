@@ -18,7 +18,7 @@ public partial class GitHubClientWindow : Window
     {
         _client = new GitHubClient();
         InitializeComponent();
-        LoadSettings();
+        LoadSettings();// test
     }
 
     public string RepoDirectory
