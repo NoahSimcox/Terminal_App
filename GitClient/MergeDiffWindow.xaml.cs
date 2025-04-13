@@ -109,11 +109,11 @@ public partial class MergeDiffWindow : Window
                 }
 
                 if (bt == null)
-                    bt = "bt this guy was null as hell";
+                    bt = baseLines[baseCurrentLine++];
                 if (tt == null)
-                    tt = "tt this guy was null as hell";
+                    tt = theirLines[theirCurrentLine++];
                 if (yt == null)
-                    yt = "yt this guy was null as hell";
+                    yt = yourLines[yourCurrentLine++];
                 
                 // at this point the line must be empty (no additions)
                 AddText(BaseGrid, bt, i);
