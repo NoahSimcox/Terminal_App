@@ -72,23 +72,55 @@ public partial class MergeDiffWindow : Window
         int theirCurrentLine = 0;
         for (int i = 0; i < lines; i++)
         {
-            if (theirRemovalLineNumbers.Contains(baseCurrentLine) || yourRemovalLineNumbers.Contains(baseCurrentLine))
+            bool shouldContinue = false;
+            if (yourAdditionLineNumbers.Contains(yourCurrentLine) && yourRemovalLineNumbers.Contains(yourCurrentLine))
             {
-                baseCurrentLine++;
-                continue;
+                AddText(YourGrid, yourLines[yourCurrentLine++], i);
+                AddText(BaseGrid, baseLines[baseCurrentLine++], i);
+                shouldContinue = true;
             }
             
+            if (theirAdditionLineNumbers.Contains(theirCurrentLine) && theirRemovalLineNumbers.Contains(theirCurrentLine))
+            {
+                AddText(TheirGrid, theirLines[theirCurrentLine++], i);
+                if (!shouldContinue)
+                    AddText(BaseGrid, baseLines[baseCurrentLine++], i);
+                shouldContinue = true;
+            }
+            
+            if (shouldContinue) continue;
+
             if (yourAdditionLineNumbers.Contains(yourCurrentLine))
             {
-                yourCurrentLine++;
-                continue;
+                AddText(YourGrid, yourLines[yourCurrentLine++], i);
+                AddText(BaseGrid, " added line goes here", i);
+                shouldContinue = true;
             }
 
             if (theirAdditionLineNumbers.Contains(theirCurrentLine))
             {
-                theirCurrentLine++;
-                continue;
+                AddText(TheirGrid, yourLines[yourCurrentLine++], i);
+                if (!shouldContinue)
+                    AddText(BaseGrid, " added line goes here", i);
+                shouldContinue = true;
             }
+            if (shouldContinue) continue;
+            
+            if (yourRemovalLineNumbers.Contains(yourCurrentLine))
+            {
+                AddText(YourGrid, " removed line", i);
+                AddText(BaseGrid, baseLines[baseCurrentLine++], i);
+                shouldContinue = true;
+            }
+
+            if (theirAdditionLineNumbers.Contains(theirCurrentLine))
+            {
+                AddText(TheirGrid, " removed line", i);
+                if (!shouldContinue)
+                    AddText(BaseGrid, baseLines[baseCurrentLine++], i);
+                shouldContinue = true;
+            }
+            if (shouldContinue) continue;
             
             // at this point the line must be empty (no additions)
             AddText(BaseGrid, baseLines[baseCurrentLine++], i);
