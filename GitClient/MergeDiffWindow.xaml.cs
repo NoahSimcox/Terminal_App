@@ -26,8 +26,8 @@ public partial class MergeDiffWindow : Window
         string[] theirLines = theirBlob.GetContentText().Split(["\n", "\n\r", "\r"], StringSplitOptions.None);
 
         // add all of base and then add changed lines later to the you and they grids
-        ContentChanges youBaseDiff = repo.Diff.Compare(yourBlob, baseBlob);
-        ContentChanges themBaseDiff = repo.Diff.Compare(theirBlob, baseBlob);
+        ContentChanges youBaseDiff = repo.Diff.Compare(baseBlob, yourBlob);
+        ContentChanges themBaseDiff = repo.Diff.Compare(baseBlob, yourBlob);
 
         int[] yourAdditionLineNumbers = new int[youBaseDiff.LinesAdded];
         for (int i = 0; i < youBaseDiff.LinesAdded; i++)
