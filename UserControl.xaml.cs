@@ -1,9 +1,11 @@
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
+using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.UI.Xaml;
@@ -30,34 +32,90 @@ namespace Terminal_App
         private string _dirText = "C:\\>";
         private StreamReader _streamReader = new StreamReader(Path.Combine(AppContext.BaseDirectory, "cmdCommands.txt"));
         private List<string> _commands;
+        public PseudoConsole _pseudoConsole;
         private int _selectedItemIndex = 0;
+        private CancellationTokenSource _cts = new();
+        private SemaphoreSlim _autoResetEvent = new(0,1);
+        private ConcurrentQueue<byte[]> _command =new();
 
+        private Microsoft.UI.Dispatching.DispatcherQueue _dispatcherQueue;
 
         public UserControl()
         {
+            InitializeComponent();
+            _dispatcherQueue = Microsoft.UI.Dispatching.DispatcherQueue.GetForCurrentThread();
             string contents = _streamReader.ReadToEnd();
             _commands = contents.Split(",").ToList();
+            OutputText.Loaded += OutputText_Loaded;
         }
         
+        public void OutputText_Loaded(object sender, RoutedEventArgs e)
+        {
+            double fontSize = OutputText.FontSize;
+            double height = OutputText.ActualHeight / fontSize;
+            TextBlock textBlock = new TextBlock
+            {
+                Text = "A", // Single character to measure
+                FontFamily = new FontFamily("Consolas, Couriers New"), // Replace with your desired monospaced font
+                FontSize =  fontSize// Set the desired font size
+            };
+            
+            textBlock.Measure(new Size(double.PositiveInfinity, double.PositiveInfinity));
+            double textWidth = textBlock.DesiredSize.Width;
+            double width= OutputText.ActualWidth/textWidth;
+             
+            short trueSize = (short) Math.Max(width, height);
+            _pseudoConsole = new PseudoConsole((3000, 3000), ((short)300,(short)300),Microsoft.UI.Dispatching.DispatcherQueue.GetForCurrentThread());
+            // _pseudoConsole.Buffer.TextBox = OutputText;
+            Task.Run(async()=>await _pseudoConsole.BufferLoop(_cts.Token));
+            Task.Run(async()=>
+            {
+                while(!_cts.IsCancellationRequested)
+                {
+                    await Task.Delay(1000);
+                    // if(!_pseudoConsole.Buffer.Dirty)
+                    // {
+                    //     continue;
+                    // }
+                    _dispatcherQueue.TryEnqueue(() =>
+                    {
+                        double vertiOffset = ScrollViewer.VerticalOffset;
+                        
+                        OutputText.Text = _pseudoConsole.Buffer.PrintString();
+                        ScrollViewer.ChangeView(null,vertiOffset,null);
+                    });
+                }
+            });
+            Task.Run(async()=>
+            {
+                while(!_cts.IsCancellationRequested)
+                {
+                    await _autoResetEvent.WaitAsync();
+                    if(_command.TryDequeue(out var result))
+                    {
+                        
+                        await _pseudoConsole.SendInput(result, _cts.Token);
+                    }else{
+                        
+                        await _pseudoConsole.SendCommand("yo the command is null", _cts.Token);
+                    }
+                } 
+                
+            });
+        }
 
         private void KeyDownEvent(object sender, KeyRoutedEventArgs e)
         {
 
             if (e.Key == VirtualKey.Enter)
             {
-                // Task.Run(async () => await _pseudoConsole.SendCommand(InputBox.Text, _cts.Token));
+                    _command.Enqueue( Encoding.ASCII.GetBytes(InputBox.Text+"\r\n"));
+                    try
+                    {                
 
-                // TextBox outputBox = OutputText;
-                // outputBox.Text += _dirText +" "+ InputBox.Text;
-                //
-                // if (outputBox.Text == OutputText.Text)
-                //     outputBox.Text += " " + "\n";
-                // else
-                //     outputBox.Text += "\n";
-                //
+                        _autoResetEvent.Release();
+                    }catch{}
                 InputBox.Text = "";
-                //
-                // ScrollViewer.ChangeView(null, ScrollViewer.ExtentHeight, null);
             }
 
 
@@ -121,17 +179,6 @@ namespace Terminal_App
             InputBox.Focus(FocusState.Programmatic);
         }
         
-
-        private UIElement CreateNewTerminalInstance()
-        {
-            // Return a fresh Grid that has the full terminal layout (clone your original Grid)
-            var terminalGrid = new Grid();
-            foreach (var item in EnclosingGrid.Children)
-                terminalGrid.Children.Add(item);
-
-            // Add rows, columns, textboxes, etc. like in your XAML
-            return terminalGrid;
-        }
 
     }
 }
