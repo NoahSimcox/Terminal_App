@@ -26,19 +26,18 @@ namespace Terminal_App
     public sealed partial class MainWindow : Window
     {
 
-       private string dirText = "C:\\>";
-
-       private StreamReader reader = new StreamReader(Path.Combine(AppContext.BaseDirectory, "cmdCommands.txt"));
-       private List<string> commands;
-       private int selectedItemIndex = 0;
+       private string _dirText = "C:\\>";
+       private StreamReader _streamReader = new StreamReader(Path.Combine(AppContext.BaseDirectory, "cmdCommands.txt"));
+       private List<string> _commands;
+       private int _selectedItemIndex = 0;
         
         public MainWindow()
         {
             this.InitializeComponent();
-            Directory2.Text = dirText;
+            Directory2.Text = _dirText;
 
-            string contents = reader.ReadToEnd();
-            commands = contents.Split(",").ToList();
+            string contents = _streamReader.ReadToEnd();
+            _commands = contents.Split(",").ToList();
         }
 
         private void KeyDownEvent(object sender, KeyRoutedEventArgs e)
@@ -47,7 +46,7 @@ namespace Terminal_App
             if (e.Key == VirtualKey.Enter)
             {
                 TextBox outputBox = OutputText;
-                outputBox.Text += dirText +" "+ InputBox.Text;
+                outputBox.Text += _dirText +" "+ InputBox.Text;
                 
                 if (outputBox.Text == OutputText.Text)
                     outputBox.Text += " " + "\n";
@@ -62,7 +61,7 @@ namespace Terminal_App
 
             if (e.Key == VirtualKey.Tab && AutocompletePopup.IsOpen)
             {
-                InputBox.Text = SuggestionsList.Items[selectedItemIndex].ToString();
+                InputBox.Text = SuggestionsList.Items[_selectedItemIndex].ToString();
                 InputBox.Focus(FocusState.Programmatic);
                 e.Handled = true;
                 InputBox.SelectionStart = InputBox.Text.Length;
@@ -71,18 +70,18 @@ namespace Terminal_App
             
             if (e.Key == VirtualKey.Up && AutocompletePopup.IsOpen)
             {
-                if (selectedItemIndex > 0)
-                    selectedItemIndex--;
+                if (_selectedItemIndex > 0)
+                    _selectedItemIndex--;
                 
             } else if (e.Key == VirtualKey.Down && AutocompletePopup.IsOpen)
             {
-                if (selectedItemIndex < SuggestionsList.Items.Count - 1)
-                    selectedItemIndex++;
+                if (_selectedItemIndex < SuggestionsList.Items.Count - 1)
+                    _selectedItemIndex++;
             }else 
-                selectedItemIndex = 0;
+                _selectedItemIndex = 0;
 
             
-            SuggestionsList.SelectedIndex = selectedItemIndex;
+            SuggestionsList.SelectedIndex = _selectedItemIndex;
         }
 
         private void KeyUpEvent(object sender, KeyRoutedEventArgs e)
@@ -95,7 +94,7 @@ namespace Terminal_App
                 return;
             }
             
-            var matches = commands.Where(cmd => cmd.StartsWith(text, StringComparison.OrdinalIgnoreCase)).ToList();
+            var matches = _commands.Where(cmd => cmd.StartsWith(text, StringComparison.OrdinalIgnoreCase)).ToList();
             
             if (matches.Count > 0)
             {
