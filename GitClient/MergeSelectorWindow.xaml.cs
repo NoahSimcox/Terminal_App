@@ -1,4 +1,4 @@
-﻿using System.IO;
+using System.IO;
 using LibGit2Sharp;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
