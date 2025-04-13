@@ -58,7 +58,7 @@ public partial class MergeDiffWindow : Window
         }
         
         
-        int lines = Math.Min(Math.Min(theirLines.Length, yourLines.Length), baseLines.Length);
+        int lines = Math.Max(Math.Max(theirLines.Length, yourLines.Length), baseLines.Length);
         int baseCurrentLine = 0;
         int yourCurrentLine = 0;
         int theirCurrentLine = 0;
