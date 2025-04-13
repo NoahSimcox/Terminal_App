@@ -27,7 +27,7 @@
             </Grid.ColumnDefinitions>
         
             <ScrollViewer Grid.Column="1" VerticalScrollBarVisibility="Auto" Name="ScrollViewer">
-            <TextBox x:Name="OutputText"
+            <TextBox x:Name="_OutputText"
                      Foreground="White"
                      FontFamily="Consolas, Courier New"
                      FontSize="24"
@@ -77,14 +77,13 @@
                    Opened = "AutocompletePopup_Opened">
 
                 <Border Background="Black" BorderBrush="White" BorderThickness="1">
-                    <ListBox x:Name="SuggestionsList"
-                             Background="Black"
-                             Foreground="White"
-                             FontSize="20"
-                             ItemContainerStyle="{StaticResource ListBoxItemStyle}"
-                             SelectionMode="Single"
-                             SelectedIndex="0"
-                             Template="{StaticResource Control}"/>
+                    <!-- <ListBox x:Name="SuggestionsList" -->
+                    <!--          Background="Black" -->
+                    <!--          Foreground="White" -->
+                    <!--          FontSize="20" -->
+                    <!--          SelectionMode="Single" -->
+                    <!--          SelectedIndex="0" -->
+                    <!--          Template="{StaticResource Control}"/> -->
                 </Border>
             </Popup>
         </Grid>

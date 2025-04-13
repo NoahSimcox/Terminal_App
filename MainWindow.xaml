@@ -29,15 +29,15 @@
                           VerticalAlignment="Stretch"
                           FontFamily="Consolas, Courier New"
                           
-                          AddTabButtonClick="TerminalTabs_AddTabButtonClick">
+                          AddTabButtonClick="TerminalTabs_AddTabButtonClick"
                           SelectionChanged="TerminalTabs_OnSelectionChanged">
                 
                 <!-- Sample tab -->
-                <muxc:TabViewItem Header="Terminal 1" Style="{StaticResource TabStyle}" Name="Tab">
-                    
-                    <local:UserControl></local:UserControl>
-        
-                </muxc:TabViewItem>
+                <!-- <muxc:TabViewItem Header="Terminal 1" Style="{StaticResource TabStyle}" Name="Tab"> -->
+                <!--      -->
+                <!--     <local:UserControl></local:UserControl> -->
+                <!-- -->
+                <!-- </muxc:TabViewItem> -->
 
             </muxc:TabView>
         
