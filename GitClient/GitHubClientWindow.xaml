@@ -28,10 +28,17 @@
         
         <!-- changed files list -->
         <!--Width="20" Height="20"-->
-        <StackPanel Grid.Row="0" Grid.Column="0">
-            <Button Content="⟳" Click="{x:Bind RefreshChangedFilesText}" />
-            <TextBlock x:Name="ChangedFilesText"/>
-        </StackPanel>
+        <Grid Grid.Row="0" Grid.Column="0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            
+            <Button Grid.Row="0" Content="⟳" Click="{x:Bind RefreshChangedFilesText}"/>
+            <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
+                <TextBlock x:Name="ChangedFilesText" TextTrimming="CharacterEllipsis" />
+            </ScrollViewer>
+        </Grid>
         
         <!-- git control -->
         <StackPanel Grid.Row="1" Grid.Column="0">

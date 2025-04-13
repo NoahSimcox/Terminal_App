@@ -18,8 +18,9 @@ public class GitHubClient
 
     private string _localRepoDirectory = "";
     private Signature Signature => new (new Identity(_username, _email), DateTime.Now);
-    
 
+    public Repository? repo;
+    
     public string Username
     {
         get => _username;
@@ -29,7 +30,11 @@ public class GitHubClient
     public string Directory
     {
         get => _localRepoDirectory;
-        set => _localRepoDirectory = value;
+        set
+        {
+            _localRepoDirectory = value;
+            repo = new Repository(value);
+        }
     }
 
     public string Email
@@ -40,7 +45,7 @@ public class GitHubClient
 
     public void Commit(string message, string[] changedFilePaths)
     {
-        using Repository repo = new Repository(_localRepoDirectory);
+        // using Repository repo = new Repository(_localRepoDirectory);
 
         foreach (string path in changedFilePaths)
             Commands.Stage(repo, path);
@@ -76,7 +81,7 @@ public class GitHubClient
     {
         string accessToken = await GetOauthToken();
 
-        using var repo = new Repository(_localRepoDirectory);
+        // using var repo = new Repository(_localRepoDirectory);
         var options = new PushOptions
         {
             CredentialsProvider = (_, _, _) => new UsernamePasswordCredentials
@@ -133,9 +138,9 @@ public class GitHubClient
 
     public string[] GetChangedFiles()
     {
-        if (string.IsNullOrEmpty(_localRepoDirectory)) throw new Exception("No Repository Specified");
+        if (repo == null || string.IsNullOrEmpty(_localRepoDirectory)) throw new Exception("No Repository Specified");
         
-        using var repo = new Repository(_localRepoDirectory);
+        // using var repo = new Repository(_localRepoDirectory);
         var status = repo.RetrieveStatus();
 
         // TODO: status.Missing
@@ -151,7 +156,7 @@ public class GitHubClient
     {
         string accessToken = await GetOauthToken();
         
-        using Repository repo = new Repository(_localRepoDirectory);
+        // using Repository repo = new Repository(_localRepoDirectory);
         // Pull options with credentials if needed
         PullOptions pullOptions = new PullOptions
         {
@@ -181,14 +186,14 @@ public class GitHubClient
             ConflictCollection conflicts = repo.Index.Conflicts;
             
             foreach (Conflict c in conflicts)
-                HandleMerge(repo, c);
+                HandleMerge(c);
 
             repo.Commit("merge", Signature, Signature);
 
         }
     }
 
-    private void HandleMerge(Repository repo, Conflict conflict)
+    private void HandleMerge(Conflict conflict)
     {
         Blob yours = repo.Lookup<Blob>(conflict.Ours.Id);
         Blob original = repo.Lookup<Blob>(conflict.Ancestor.Id);

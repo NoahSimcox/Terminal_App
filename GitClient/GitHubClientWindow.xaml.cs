@@ -18,7 +18,8 @@ public partial class GitHubClientWindow : Window
     {
         _client = new GitHubClient();
         InitializeComponent();
-        LoadSettings();// test
+        LoadSettings();
+        RefreshChangedFilesText();
     }
 
     public string RepoDirectory
@@ -48,7 +49,11 @@ public partial class GitHubClientWindow : Window
         catch (Exception e) { ChangedFilesText.Text = e.Message; }
     }
         
-    public void Commit() => _client.Commit(CommitMessage, _client.GetChangedFiles());
+    public void Commit()
+    {
+        _client.Commit(CommitMessage, _client.GetChangedFiles());
+        RefreshChangedFilesText();
+    }
     public async Task Push() => await _client.Push();
     public async Task Pull() => await _client.Pull();
 
