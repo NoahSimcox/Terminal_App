@@ -9,27 +9,64 @@
     mc:Ignorable="d"
     Title="GitHubClient">
     
+    
     <Grid Background="Black">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="2*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="3*" />
-            <ColumnDefinition Width="2*" />
+            <ColumnDefinition Width="5*"/>
+            <ColumnDefinition Width="18*"/>
         </Grid.ColumnDefinitions>
-
-        <StackPanel Padding="10" Spacing="10">
-            <TextBox PlaceholderText="Directory" Text="{x:Bind Directory, Mode=TwoWay}" />
-            <TextBox PlaceholderText="User" Text="{x:Bind User, Mode=TwoWay}" />
-            <TextBox PlaceholderText="Email" Text="{x:Bind Email, Mode=TwoWay}" />
-            
-            <Button Content="Pull" Click="{x:Bind Pull}" Width="100" Margin="0,10,0,0"/>
-            
-            <StackPanel Orientation="Vertical" Spacing="10" Margin="0, 10, 0, 10">
+        <Grid.Resources>
+            <Style TargetType="TextBlock">
+                <Setter Property="Foreground" Value="White"/>
+            </Style>
+        </Grid.Resources>
+        
+        <!-- changed files list -->
+        <TextBlock Text="Changed Files"/>
+        
+        <!-- git control -->
+        <StackPanel Grid.Row="1" Grid.Column="0">
+            <StackPanel Orientation="Vertical" VerticalAlignment="Bottom" >
                 <TextBox PlaceholderText="CommitMessage" Text="{x:Bind CommitMessage, Mode=TwoWay}"/> 
-                <StackPanel Orientation="Horizontal" Spacing="10" Margin="0,10,0,0">
-                    <Button Content="Commit" Click="{x:Bind Commit}" Width="100"/>
-                    <Button Content="Push" Click="{x:Bind Push}" Width="100"/>
-                </StackPanel>
+                
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    
+                    <Button Grid.Column="0" Content="Commit" Click="{x:Bind Commit}" HorizontalAlignment="Stretch"/>
+                    <Button Grid.Column="1" Content="Push" Click="{x:Bind Push}" HorizontalAlignment="Stretch"/>
+                    <Button Grid.Column="2" Content="Pull" Click="{x:Bind Pull}" HorizontalAlignment="Stretch"/>
+                
+                </Grid>
             </StackPanel>
         </StackPanel>
+        
+        
+        <!-- diff -->
+        <TextBlock Grid.Row="0" Grid.Column="1" Text="Diff"/>
+        
+        <!-- repo and user info -->
+        <StackPanel Grid.Row="1" Grid.Column="1" Orientation="Vertical">
+            <TextBox PlaceholderText="Directory" Text="{x:Bind Directory, Mode=TwoWay}" />
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="2*"/>
+                </Grid.ColumnDefinitions>
+                
+                <TextBox Grid.Column="0" PlaceholderText="User" Text="{x:Bind User, Mode=TwoWay}" />
+                <TextBox Grid.Column="1" PlaceholderText="Email" Text="{x:Bind Email, Mode=TwoWay}" />
+            </Grid>
+        </StackPanel>
+        
 
         <!-- <StackPanel Grid.Column="1" Padding="10"> -->
         <!--     <TextBlock Text="Changed files" FontWeight="Bold" Margin="0,0,0,10"/> -->

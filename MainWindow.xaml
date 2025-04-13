@@ -9,10 +9,6 @@
     mc:Ignorable="d"
     Title="Terminal_App">
     
-    
-    
-    
-    
         <Grid Background="Black" Name="MainGrid" Padding="5">
         <Grid.Resources>
             <!-- Create a custom TextBox style -->
