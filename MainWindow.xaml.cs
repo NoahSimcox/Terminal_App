@@ -1,9 +1,12 @@
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Runtime.InteropServices.WindowsRuntime;
+using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.UI.Xaml;
@@ -19,6 +22,8 @@ using Windows.Foundation.Collections;
 using Windows.System;
 using Windows.UI;
 using Microsoft.UI;
+using Windows.UI.Core;
+using ABI.Microsoft.UI.Input;
 using testcmd;
 
 // To learn more about WinUI, the WinUI project structure,
@@ -33,28 +38,11 @@ namespace Terminal_App
     {
 
        private string _dirText = "C:\\>";
-       private StreamReader _streamReader = new StreamReader(Path.Combine(AppContext.BaseDirectory, "cmdCommands.txt"));
-       private List<string> _commands;
-       private int _selectedItemIndex = 0;
-       
-       private PseudoConsole _pseudoConsole;
-       private CancellationTokenSource _cts = new();
-        private Microsoft.UI.Dispatching.DispatcherQueue _dispatcherQueue;
         public MainWindow()
         {
-            _dispatcherQueue = Microsoft.UI.Dispatching.DispatcherQueue.GetForCurrentThread();
-            _pseudoConsole = new PseudoConsole((1000,300),(200,200),_dispatcherQueue);
             this.InitializeComponent();
-            
-            // _pseudoConsole.Buffer.TextBox = OutputText;
-            // Directory2.Text = _dirText;
-
-            Task.Run(async () => await _pseudoConsole.BufferLoop(_cts.Token));
-            
         }
-            
 
-        
         private void TerminalTabs_AddTabButtonClick(TabView sender, object args)
         {
             var newTab = new TabViewItem();
@@ -65,8 +53,9 @@ namespace Terminal_App
             TerminalTabs.TabItems.Add(newTab);
             TerminalTabs.SelectedItem = newTab;
         }
-        
+        private const uint MAPVK_VK_TO_CHAR = 2;
+
+        [DllImport("user32.dll")]
+        private static extern uint MapVirtualKey(uint uCode, uint uMapType);
     }
-
-
 }

@@ -30,7 +30,8 @@ public class RingBuffer
     private int _furthestWrite;
     public (short, short) CursorPos;
     public SemaphoreSlim BufferLock= new SemaphoreSlim(1,1);
-    public TextBox TextBox;
+    public RichEditBox RichEditBox;
+    public bool Dirty = false;
     
     public RingBuffer((int,int) bufferSize,(short,short)viewportSize)
     {
@@ -38,22 +39,33 @@ public class RingBuffer
         BufferSize = bufferSize;
         _buffer =  new byte[bufferSize.Item1, bufferSize.Item2];
     }
+
     public string PrintString()
     {
         StringBuilder sb = new StringBuilder();
-        int line = _viewPortTop-1;
-        while(line != _furthestWrite)
+        int line = _viewPortTop - 1;
+        while (line != _furthestWrite)
         {
             line++;
-            line%= BufferSize.Item1;
-            for(int i=0;i<ViewportSize.Item2;i++)
+            line %= BufferSize.Item1;
+            for (int i = 0; i < ViewportSize.Item2; i++)
             {
-                sb.Append((char)_buffer[line,i]);
+                byte d = _buffer[line, i];
+                if (d >= 32 && d <= 126)
+                {
+
+                    sb.Append((char)_buffer[line, i]);
+                }
+                else
+                {
+                    sb.Append(" ");
+                }
             }
 
             sb.AppendLine();
         }
-        return sb.ToString();
+
+    return sb.ToString();
     }
     public void Print()
     {
@@ -152,17 +164,17 @@ public class RingBuffer
     }
     public void Write(byte value)
     {
+        Dirty = true;
         int line = _ringLineNum + _viewPortTop + CursorPos.Item2;
         _furthestWrite = Math.Max(line+1,_furthestWrite);
         _buffer[(_ringLineNum+_viewPortTop+CursorPos.Item2)%BufferSize.Item2, CursorPos.Item1%ViewportSize.Item1] = value;
-        if(!DispatcherQueue.TryEnqueue(() =>
-        {
-
-            TextBox.Text = PrintString();
-        }))
-        {
-
-        }
+        // if(!DispatcherQueue.TryEnqueue(() =>
+        // {
+        //     RichEditBox.Document.GetRange() 
+        // }))
+        // {
+        //
+        // }
     }
     
 }
@@ -181,7 +193,7 @@ public class PseudoConsole: IDisposable
     private Queue<byte> _stdinPipe= new();
     public RingBuffer Buffer;
     public List<byte> DebugList = [];
-    public PseudoConsole((int,int) bufferSize,(short,short) size, DispatcherQueue dispatcherQueue)
+    public PseudoConsole((int,int) bufferSize,(short,short) size,  DispatcherQueue dispatcherQueue)
     {
         
         Size = size;
@@ -291,6 +303,10 @@ public class PseudoConsole: IDisposable
         DebugList.Add(buffer[0]);
         return (buffer[0],true);
     }
+    private async Task ParseColor(CancellationToken ct)
+    {
+        while ((char)await UpdateBuffer(ct) != 'm') ;
+    }
     private async Task<(int,byte)> ParseInt(CancellationToken ct,char? firstChar = null)
     {
         List<char> chars = [];
@@ -339,8 +355,16 @@ public class PseudoConsole: IDisposable
                         nextByte = (char)await UpdateBuffer(ct);
                     }
                     short num2 = (short)Int32.Parse(String.Join("",num2arr));
-                    Buffer.SetCursorX((short)(num2-1)); 
-                    Buffer.SetCursorY((short)(num-1)); 
+                    if(nextByte == 'H' || nextByte=='f')
+                    {
+                        Buffer.SetCursorX((short)(num2-1)); 
+                        Buffer.SetCursorY((short)(num-1)); 
+                    }
+
+                    if (nextByte ==';')
+                    {
+                        await ParseColor(ct);
+                    } 
                     break;
                 case 'A':
                     Buffer.MoveCursorUp(num);
@@ -492,6 +516,10 @@ public class PseudoConsole: IDisposable
                     Buffer.MoveCursorDown(doScroll:true);
                     Buffer.SetCursorX(0);
                     break;
+                case 0x7f:
+                    Buffer.MoveCursorLeft();
+                    Buffer.Write(0); 
+                    break;
                 case (byte)'\r':
                     Buffer.SetCursorX(0);
                     break;
@@ -531,10 +559,17 @@ public class PseudoConsole: IDisposable
     }
     public async Task SendCommand(string command, CancellationToken ct)
     {
+        try
+        {
+            
+            command += "\r\n";
+            var data = Encoding.ASCII.GetBytes(command);
+            await SendInput(data, ct);
+        }catch(Exception ex)
+        {
+            command += "bruh";
+        }
         
-        command += "\r\n";
-        var data = Encoding.ASCII.GetBytes(command);
-        await SendInput(data, ct);
     }
 
     public void Dispose()

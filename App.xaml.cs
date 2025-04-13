@@ -43,8 +43,8 @@ namespace Terminal_App
         protected override void OnLaunched(Microsoft.UI.Xaml.LaunchActivatedEventArgs args)
         {
             // m_window = new MergeSelectorWindow(null);
-            m_window = new GitHubClientWindow();
-            // m_window = new MainWindow();
+            // m_window = new GitHubClientWindow();
+            m_window = new MainWindow();
             m_window.Activate();
         }
 
