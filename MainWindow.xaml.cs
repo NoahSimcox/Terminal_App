@@ -1,9 +1,12 @@
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Runtime.InteropServices.WindowsRuntime;
+using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.UI.Xaml;
@@ -19,6 +22,8 @@ using Windows.Foundation.Collections;
 using Windows.System;
 using Windows.UI;
 using Microsoft.UI;
+using Windows.UI.Core;
+using ABI.Microsoft.UI.Input;
 using testcmd;
 
 // To learn more about WinUI, the WinUI project structure,
@@ -31,10 +36,8 @@ namespace Terminal_App
     /// </summary>
     public sealed partial class MainWindow : Window
     {
-       
-       private PseudoConsole _pseudoConsole;
-       private CancellationTokenSource _cts = new();
-        private Microsoft.UI.Dispatching.DispatcherQueue _dispatcherQueue;
+
+       private string _dirText = "C:\\>";
         public MainWindow()
         {
             _dispatcherQueue = Microsoft.UI.Dispatching.DispatcherQueue.GetForCurrentThread();
@@ -60,7 +63,10 @@ namespace Terminal_App
             TerminalTabs.TabItems.Add(newTab);
             TerminalTabs.SelectedItem = newTab;
         }
-        
+        private const uint MAPVK_VK_TO_CHAR = 2;
+
+        [DllImport("user32.dll")]
+        private static extern uint MapVirtualKey(uint uCode, uint uMapType);
     }
 
 
