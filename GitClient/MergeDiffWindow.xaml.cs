@@ -104,14 +104,14 @@ public partial class MergeDiffWindow : Window
 
                 if (shouldContinue) continue;
 
-                if (yourRemovalLineNumbers.Contains(yourCurrentLine))
+                if (yourRemovalLineNumbers.Contains(baseCurrentLine))
                 {
                     AddText(YourGrid, " removed lin yorese", i);
                     AddText(BaseGrid, baseLines[baseCurrentLine++], i);
                     shouldContinue = true;
                 }
 
-                if (theirAdditionLineNumbers.Contains(theirCurrentLine))
+                if (theirAdditionLineNumbers.Contains(baseCurrentLine))
                 {
                     AddText(TheirGrid, " removed line thrits", i);
                     if (!shouldContinue)
