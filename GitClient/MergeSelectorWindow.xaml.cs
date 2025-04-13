@@ -17,7 +17,7 @@ public partial class MergeSelectorWindow : Window
     
     public MergeSelectorWindow(ConflictCollection conflicts, Repository repo, string repoPath, Signature signature)
     {
-        InitializeComponent(); // noah kys
+        InitializeComponent(); // noah kys // make it bad
         _conflicts = conflicts;
         _repo = repo;
         _repoPath = repoPath;
