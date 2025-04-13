@@ -96,7 +96,7 @@ public partial class MergeDiffWindow : Window
 
                 if (theirAdditionLineNumbers.Contains(theirCurrentLine))
                 {
-                    AddText(TheirGrid, yourLines[yourCurrentLine++], i);
+                    AddText(TheirGrid, theirLines[theirCurrentLine++], i);
                     if (!shouldContinue)
                         AddText(BaseGrid, " added line goes here vs theirs", i);
                     shouldContinue = true;
