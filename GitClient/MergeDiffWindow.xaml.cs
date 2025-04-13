@@ -33,8 +33,6 @@ public partial class MergeDiffWindow : Window
         for (int i = 0; i < youBaseDiff.LinesAdded; i++)
         {
             AddButton(YourGrid, youBaseDiff.AddedLines[i]);
-            AddText(YourGrid, youBaseDiff.AddedLines[i].Content, youBaseDiff.AddedLines[i].LineNumber);
-            AddText(BaseGrid, "<><><><>", youBaseDiff.AddedLines[i].LineNumber);
             yourAdditionLineNumbers[i] = youBaseDiff.AddedLines[i].LineNumber;
         }
 
@@ -42,8 +40,6 @@ public partial class MergeDiffWindow : Window
         for (int i = 0; i < youBaseDiff.LinesDeleted; i++)
         {
             AddButton(YourGrid, youBaseDiff.DeletedLines[i]);
-            AddText(YourGrid, " line to remove here", youBaseDiff.DeletedLines[i].LineNumber);
-            AddText(BaseGrid, youBaseDiff.DeletedLines[i].Content, youBaseDiff.DeletedLines[i].LineNumber);
             yourRemovalLineNumbers[i] = youBaseDiff.DeletedLines[i].LineNumber;
         }
 
@@ -51,8 +47,6 @@ public partial class MergeDiffWindow : Window
         for (int i = 0; i < themBaseDiff.LinesAdded; i++)
         {
             AddButton(YourGrid, themBaseDiff.AddedLines[i]);
-            AddText(TheirGrid, themBaseDiff.AddedLines[i].Content, themBaseDiff.AddedLines[i].LineNumber);
-            AddText(BaseGrid, "><><><><", themBaseDiff.AddedLines[i].LineNumber);
             theirAdditionLineNumbers[i] = themBaseDiff.AddedLines[i].LineNumber;
         }
         
@@ -60,13 +54,11 @@ public partial class MergeDiffWindow : Window
         for (int i = 0; i < themBaseDiff.LinesDeleted; i++)
         {
             AddButton(TheirGrid, themBaseDiff.DeletedLines[i]);
-            AddText(TheirGrid, " line to remove here", themBaseDiff.DeletedLines[i].LineNumber);
-            AddText(BaseGrid, themBaseDiff.DeletedLines[i].Content, themBaseDiff.DeletedLines[i].LineNumber);
             theirRemovalLineNumbers[i] = themBaseDiff.DeletedLines[i].LineNumber;
         }
         
         
-        int lines = Math.Max(Math.Max(theirLines.Length, yourLines.Length), baseLines.Length);
+        int lines = Math.Min(Math.Min(theirLines.Length, yourLines.Length), baseLines.Length);
         int baseCurrentLine = 0;
         int yourCurrentLine = 0;
         int theirCurrentLine = 0;
