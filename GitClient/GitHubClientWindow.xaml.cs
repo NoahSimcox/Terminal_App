@@ -1,10 +1,10 @@
 
 using System;
 using System.IO;
-using System.Linq;
+using System.Linq; // cofkkl
 using System.Text.Json;
 using System.Threading.Tasks;
-using LibGit2Sharp;// okokokokokasdllllllllllllllllllll
+using LibGit2Sharp;
 using Microsoft.UI.Xaml; 
 using JsonSerializer = Newtonsoft.Json.JsonSerializer; // padpsdapoodsa
 
