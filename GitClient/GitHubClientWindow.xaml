@@ -7,6 +7,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
+    Closed="OnClosed"
     Title="GitHubClient">
     
     
@@ -54,7 +55,7 @@
         
         <!-- repo and user info -->
         <StackPanel Grid.Row="1" Grid.Column="1" Orientation="Vertical">
-            <TextBox PlaceholderText="Directory" Text="{x:Bind Directory, Mode=TwoWay}" />
+            <TextBox PlaceholderText="Directory" Text="{x:Bind RepoDirectory, Mode=TwoWay}" />
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>

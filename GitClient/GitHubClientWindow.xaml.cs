@@ -1,6 +1,10 @@
 ﻿
+using System;
+using System.IO;
+using System.Text.Json;
 using System.Threading.Tasks;
 using Microsoft.UI.Xaml;
+using JsonSerializer = Newtonsoft.Json.JsonSerializer;
 
 namespace Terminal_App.GitClient;
 
@@ -12,9 +16,10 @@ public partial class GitHubClientWindow : Window
     {
         _client = new GitHubClient();
         InitializeComponent();
+        LoadSettings();
     }
 
-    public string Directory
+    public string RepoDirectory
     {
         get => _client.Directory;
         set => _client.Directory = value;
@@ -41,5 +46,28 @@ public partial class GitHubClientWindow : Window
     public async Task Pull() => await _client.Pull();
 
 
-
+    private readonly string _settingsFilePath = "githubClientSettings.txt";
+    private void OnClosed(object sender, WindowEventArgs args)
+    {
+        using StreamWriter writer = new StreamWriter(_settingsFilePath);
+        writer.WriteLine(RepoDirectory);
+        writer.WriteLine(User);
+        writer.WriteLine(Email);
+        
+        writer.Flush();
+        writer.Close();
+        
+    }
+    
+    private void LoadSettings()
+    {
+        if (!Directory.Exists(_settingsFilePath)) return;
+        
+        using StreamReader reader = new StreamReader(new FileStream(_settingsFilePath, FileMode.Open));
+        RepoDirectory = reader.ReadLine() ?? "";
+        User = reader.ReadLine() ?? "";
+        Email = reader.ReadLine() ?? "";
+        
+        reader.Close();
+    }
 }
