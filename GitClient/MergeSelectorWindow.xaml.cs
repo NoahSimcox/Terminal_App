@@ -23,7 +23,7 @@ public partial class MergeSelectorWindow : Window
         _repoPath = repoPath;
         _signature = signature;
         
-        foreach (Conflict c in conflicts) // a line that is different
+        foreach (Conflict c in conflicts) // a line that is different sdhfgksjdfhkjashdkjashdkjh
         {
             Button b = new Button
             {
