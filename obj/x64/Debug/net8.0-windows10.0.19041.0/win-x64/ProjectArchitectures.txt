@@ -1,1 +1,0 @@
-C:\Users\finne\RiderProjects\Terminal_App\Terminal_App.csproj;x64

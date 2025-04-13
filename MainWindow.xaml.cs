@@ -59,30 +59,33 @@ namespace Terminal_App
                 ScrollViewer.ChangeView(null, ScrollViewer.ExtentHeight, null);
             }
             
-            Debug.Write("Item Index ----> "+selectedItemIndex);
-
-            if (SuggestionsList.SelectedItem == null)
-                selectedItemIndex = 0;
 
             if (e.Key == VirtualKey.Tab && AutocompletePopup.IsOpen)
             {
-                InputBox.Text = SuggestionsList.SelectedItems[SuggestionsList.SelectedIndex].ToString();
+                InputBox.Text = SuggestionsList.Items[selectedItemIndex].ToString();
                 InputBox.Focus(FocusState.Programmatic);
+                e.Handled = true;
+                InputBox.SelectionStart = InputBox.Text.Length;
             }
             
             if (e.Key == VirtualKey.Up && AutocompletePopup.IsOpen)
             {
                 if (selectedItemIndex > 0)
                     selectedItemIndex--;
+
                 
             } else if (e.Key == VirtualKey.Down && AutocompletePopup.IsOpen)
             {
-                if (selectedItemIndex < SuggestionsList.SelectedItems.Count)
+                if (selectedItemIndex < SuggestionsList.Items.Count - 1)
                     selectedItemIndex++;
+
             }
+            else 
+                selectedItemIndex = 0;
+
             
             SuggestionsList.SelectedIndex = selectedItemIndex;
-            
+
         }
 
         private void KeyUpEvent(object sender, KeyRoutedEventArgs e)

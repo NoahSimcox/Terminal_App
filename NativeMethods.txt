@@ -1,0 +1,15 @@
+﻿CreatePseudoConsole
+CreatePipe
+ClosePseudoConsole
+WriteFile
+ReadFile
+InitializeProcThreadAttributeList
+HeapFree
+GetProcessHeap
+PROC_THREAD_ATTRIBUTE_PSEUDOCONSOLE
+UpdateProcThreadAttribute
+HeapAlloc
+CreateProcess
+STARTUPINFOEXW
+GetConsoleMode
+GetLastError
